@@ -7,7 +7,10 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    public function create() { return view('auth.login'); }
+    public function create()
+    {
+        return view('auth.login');
+    }
 
     public function store(Request $request)
     {
@@ -16,7 +19,8 @@ class AuthController extends Controller
             return back()->withErrors(['email' => 'Email atau kata sandi tidak cocok dengan data kampus.'])->onlyInput('email');
         }
         $request->session()->regenerate();
-        return redirect()->intended(route('portal.dashboard'));
+
+        return Auth::user()->hasRole('mahasiswa') ? redirect()->intended(route('portal.dashboard')) : redirect()->intended('/admin');
     }
 
     public function destroy(Request $request)
@@ -24,6 +28,7 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
         return redirect()->route('home');
     }
 }
