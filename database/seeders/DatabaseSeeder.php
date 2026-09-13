@@ -6,6 +6,8 @@ use App\Models\BlogCategory;
 use App\Models\BlogPost;
 use App\Models\AcademicYear;
 use App\Models\AdmissionPath;
+use App\Models\ApprovalStep;
+use App\Models\ApprovalWorkflow;
 use App\Models\Applicant;
 use App\Models\ApplicantProgramChoice;
 use App\Models\ApplicantStatusHistory;
@@ -54,6 +56,8 @@ class DatabaseSeeder extends Seeder
         $department = Department::create(['faculty_id' => $faculty->id, 'name' => 'Departemen Informatika', 'code' => 'IF']);
         $program = StudyProgram::create(['department_id' => $department->id, 'name' => 'S1 Teknik Informatika', 'code' => 'IF', 'level' => 'S1', 'degree' => 'S.Kom', 'accreditation' => 'Baik Sekali', 'capacity' => 240]);
         $regularPath = AdmissionPath::create(['university_id' => $university->id, 'name' => 'Reguler', 'code' => 'REG', 'passing_grade' => 70, 'status' => 'active']);
+        $leaveWorkflow = ApprovalWorkflow::create(['university_id' => $university->id, 'name' => 'Persetujuan cuti mahasiswa', 'module' => 'student_leave', 'is_active' => true]);
+        ApprovalStep::create(['approval_workflow_id' => $leaveWorkflow->id, 'step_order' => 1, 'label' => 'Persetujuan administrator akademik', 'role_name' => 'super_admin']);
         $year = AcademicYear::create(['university_id' => $university->id, 'name' => '2026/2027', 'start_year' => 2026, 'end_year' => 2027, 'is_active' => true]);
         $semester = Semester::create(['academic_year_id' => $year->id, 'name' => 'Ganjil 2026/2027', 'code' => '20261', 'term' => 'odd', 'starts_on' => '2026-09-01', 'ends_on' => '2027-02-28', 'is_active' => true]);
         Setting::create(['university_id' => $university->id, 'group' => 'academic', 'key' => 'maximum_credits_by_gpa', 'value' => json_encode([

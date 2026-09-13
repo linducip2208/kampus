@@ -445,7 +445,9 @@ return new class extends Migration
         Schema::create('approval_requests', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->foreignUlid('approval_workflow_id')->constrained()->restrictOnDelete();
-            $table->morphs('approvable');
+            $table->string('approvable_type');
+            $table->ulid('approvable_id');
+            $table->index(['approvable_type', 'approvable_id']);
             $table->foreignUlid('requested_by')->constrained('users')->restrictOnDelete();
             $table->string('status')->default('pending');
             $table->timestamps();
