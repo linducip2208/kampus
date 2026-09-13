@@ -5,6 +5,10 @@ namespace Database\Seeders;
 use App\Models\BlogCategory;
 use App\Models\BlogPost;
 use App\Models\AcademicYear;
+use App\Models\AdmissionPath;
+use App\Models\Applicant;
+use App\Models\ApplicantProgramChoice;
+use App\Models\ApplicantStatusHistory;
 use App\Models\AttendanceSession;
 use App\Models\Campus;
 use App\Models\ClassSection;
@@ -49,6 +53,7 @@ class DatabaseSeeder extends Seeder
         $faculty = Faculty::create(['university_id' => $university->id, 'name' => 'Fakultas Teknologi Informasi', 'code' => 'FTI']);
         $department = Department::create(['faculty_id' => $faculty->id, 'name' => 'Departemen Informatika', 'code' => 'IF']);
         $program = StudyProgram::create(['department_id' => $department->id, 'name' => 'S1 Teknik Informatika', 'code' => 'IF', 'level' => 'S1', 'degree' => 'S.Kom', 'accreditation' => 'Baik Sekali', 'capacity' => 240]);
+        $regularPath = AdmissionPath::create(['university_id' => $university->id, 'name' => 'Reguler', 'code' => 'REG', 'passing_grade' => 70, 'status' => 'active']);
         $year = AcademicYear::create(['university_id' => $university->id, 'name' => '2026/2027', 'start_year' => 2026, 'end_year' => 2027, 'is_active' => true]);
         $semester = Semester::create(['academic_year_id' => $year->id, 'name' => 'Ganjil 2026/2027', 'code' => '20261', 'term' => 'odd', 'starts_on' => '2026-09-01', 'ends_on' => '2027-02-28', 'is_active' => true]);
         Setting::create(['university_id' => $university->id, 'group' => 'academic', 'key' => 'maximum_credits_by_gpa', 'value' => json_encode([
@@ -164,6 +169,9 @@ class DatabaseSeeder extends Seeder
         $studentUser->roles()->attach($roles['mahasiswa']->id, ['university_id' => $university->id, 'campus_id' => $campus->id, 'faculty_id' => $faculty->id, 'study_program_id' => $program->id]);
         $student = StudentProfile::create(['user_id' => $studentUser->id, 'student_number' => '2026-IF-00001', 'full_name' => $studentUser->name, 'email' => $studentUser->email, 'phone' => '081234567890', 'gender' => 'female', 'birth_date' => '2008-03-19', 'birth_place' => 'Jakarta']);
         $enrollment = StudentEnrollment::create(['student_profile_id' => $student->id, 'study_program_id' => $program->id, 'curriculum_id' => $curriculum->id, 'advisor_id' => $lecturer->id, 'cohort' => 2026, 'status' => 'active', 'enrolled_on' => '2026-08-15']);
+        $admissionApplicant = Applicant::create(['university_id' => $university->id, 'admission_path_id' => $regularPath->id, 'registration_number' => 'PMB/2026/000001', 'name' => 'Naufal Ramadhan', 'national_id' => '3174000000000001', 'nisn' => '0061234567', 'email' => 'naufal@ucn.test', 'phone' => '081298765432', 'whatsapp' => '081298765432', 'previous_school' => 'SMA Negeri 8 Jakarta', 'graduation_year' => 2026, 'school_score' => 86.50, 'status' => 'document_verification']);
+        ApplicantProgramChoice::create(['applicant_id' => $admissionApplicant->id, 'study_program_id' => $program->id, 'preference' => 1]);
+        ApplicantStatusHistory::create(['applicant_id' => $admissionApplicant->id, 'from_status' => 'payment_verified', 'to_status' => 'document_verification', 'reason' => 'Dokumen menunggu pemeriksaan tim PMB.', 'changed_at' => now()]);
 
         $sections = $courses->take(3)->map(function (Course $course, int $index) use ($semester, $lecturer) {
             $offering = CourseOffering::create(['semester_id' => $semester->id, 'course_id' => $course->id, 'status' => 'published']);

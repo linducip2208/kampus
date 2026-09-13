@@ -11,4 +11,5 @@ class StudyProgram extends CampusModel
     public function curricula() { return $this->hasMany(Curriculum::class); }
     public function enrollments() { return $this->hasMany(StudentEnrollment::class); }
     public function feeStructures() { return $this->hasMany(FeeStructure::class); }
+    public function applicantChoices() { return $this->hasMany(ApplicantProgramChoice::class); }
 }

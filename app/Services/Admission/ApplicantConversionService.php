@@ -36,7 +36,9 @@ class ApplicantConversionService
             if ($role && ! $user->roles()->whereKey($role->id)->exists()) $user->roles()->attach($role->id, ['university_id' => $locked->university_id]);
             $sequenceKey = 'nim:'.$choice->studyProgram->code;
             $this->sequences->ensure($locked->university_id, $sequenceKey, '{year}-{program}-{number}');
-            $studentNumber = $this->sequences->next($locked->university_id, $sequenceKey, ['year' => now()->year, 'program' => $choice->studyProgram->code]);
+            do {
+                $studentNumber = $this->sequences->next($locked->university_id, $sequenceKey, ['year' => now()->year, 'program' => $choice->studyProgram->code]);
+            } while (StudentProfile::query()->where('student_number', $studentNumber)->exists());
             $student = StudentProfile::create(['user_id' => $user->id, 'student_number' => $studentNumber, 'full_name' => $locked->name, 'email' => $locked->email, 'phone' => $locked->phone, 'national_id' => $locked->national_id, 'gender' => $locked->gender, 'birth_date' => $locked->birth_date, 'birth_place' => $locked->birth_place, 'address' => $locked->address]);
             $curriculum = $choice->studyProgram->curricula()->where('is_active', true)->latest('year')->first();
             $enrollment = StudentEnrollment::create(['student_profile_id' => $student->id, 'study_program_id' => $choice->study_program_id, 'curriculum_id' => $curriculum?->id, 'cohort' => now()->year, 'status' => 'active', 'admission_type' => $locked->admissionPath?->code ?? 'regular', 'enrolled_on' => now()->toDateString()]);

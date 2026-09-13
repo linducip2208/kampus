@@ -10,4 +10,5 @@ class StudentProfile extends CampusModel
     protected $casts = ['birth_date' => 'date'];
     public function user() { return $this->belongsTo(User::class); }
     public function enrollments() { return $this->hasMany(StudentEnrollment::class); }
+    public function convertedApplicants() { return $this->hasMany(Applicant::class, 'converted_student_profile_id'); }
 }

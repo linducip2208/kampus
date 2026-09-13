@@ -22,6 +22,7 @@
 - Sanctum token auth and resource endpoints for API v1.
 - Scope-aware query builder for list pages, beyond record-level policy checks.
 - PMB lifecycle and transactional applicant conversion.
+- PMB admission path, applicant lifecycle history, locked NIM sequence, admin resource, demo seed, conversion transaction, and lifecycle tests.
 - KHS/transcript PDF generation and final-document verification.
 - Payment allocation UI and verified-payment workflow.
 

@@ -13,4 +13,7 @@ class University extends CampusModel
     public function academicYears() { return $this->hasMany(AcademicYear::class); }
     public function courses() { return $this->hasMany(Course::class); }
     public function employees() { return $this->hasMany(Employee::class); }
+    public function admissionPaths() { return $this->hasMany(AdmissionPath::class); }
+    public function applicants() { return $this->hasMany(Applicant::class); }
+    public function numberSequences() { return $this->hasMany(NumberSequence::class); }
 }
