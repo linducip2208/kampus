@@ -1,0 +1,26 @@
+@import '/vendor/filament/filament/resources/css/theme.css';
+@source '../../../../app/Filament';
+@source '../../../../resources/views/filament';
+@source '../../../../vendor/filament/**/*.blade.php';
+
+:root { --campus-ink: #0b1220; --campus-blue: #2563eb; --campus-cyan: #06b6d4; }
+.fi-sidebar { background: linear-gradient(180deg, #0b1220 0%, #111c31 100%); }
+.fi-sidebar-header { border-bottom-color: rgba(255,255,255,.08); }
+.fi-sidebar-item { transition: transform .2s ease, background .2s ease; }
+.fi-sidebar-item:hover { transform: translateX(2px); }
+.fi-sidebar-item.fi-active { background: linear-gradient(90deg, rgba(37,99,235,.96), rgba(6,182,212,.78)); box-shadow: inset 3px 0 #67e8f9; }
+.fi-sidebar-group-label { letter-spacing: .06em; font-size: 10px; text-transform: uppercase; color: #94a3b8; }
+.fi-topbar { background: rgba(255,255,255,.86); backdrop-filter: blur(12px) saturate(180%); }
+.fi-section, .fi-ta, .fi-wi-widget { border-radius: 14px; box-shadow: 0 12px 35px -24px rgba(11,18,32,.4); }
+.fi-section:hover, .fi-wi-widget:hover { box-shadow: 0 20px 45px -28px rgba(37,99,235,.45); }
+.fi-ta-header-cell { letter-spacing: .04em; text-transform: uppercase; font-size: 11px; }
+.fi-ta-row:hover { background: rgba(37,99,235,.04); }
+.fi-input { border-width: 1.5px; }
+.fi-input:focus { box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
+.fi-btn-color-primary { background: linear-gradient(135deg, #2563eb, #0891b2); box-shadow: 0 8px 18px -10px rgba(37,99,235,.8); }
+.fi-btn-color-primary:hover { transform: translateY(-1px); }
+::-webkit-scrollbar { width: 10px; height: 10px; } ::-webkit-scrollbar-thumb { background: rgba(37,99,235,.25); border-radius: 999px; }
+@media (max-width: 1023px) { .fi-section { border-radius: 10px; } .fi-section-content { padding: 14px; } .fi-ta-cell { padding: 10px 12px; font-size: 12.5px; } .fi-wi-stats-overview-stat-value { font-size: 22px; } }
+@media (max-width: 640px) { .fi-topbar { padding: 10px 12px; } .fi-page-header-heading { font-size: 20px; } .fi-btn { min-height: 38px; } .fi-ac-action { width: 100%; justify-content: center; } .fi-sidebar { width: 280px; } }
+@media print { .fi-sidebar, .fi-topbar { display: none !important; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
