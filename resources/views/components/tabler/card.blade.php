@@ -1,0 +1,2 @@
+@props(['title' => null, 'subtitle' => null, 'footer' => null])
+<section {{ $attributes->class(['card']) }}>@if($title || isset($actions))<header class="card-header"><div><h3 class="card-title">{{ $title }}</h3>@if($subtitle)<p class="card-subtitle">{{ $subtitle }}</p>@endif</div>@isset($actions)<div class="card-actions">{{ $actions }}</div>@endisset</header>@endif<div class="card-body">{{ $slot }}</div>@if($footer || isset($footerSlot))<footer class="card-footer">{{ $footer ?? $footerSlot }}</footer>@endif</section>

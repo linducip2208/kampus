@@ -1,0 +1,2 @@
+@props(['title' => 'Belum ada data', 'description' => 'Data akan muncul setelah proses pertama dibuat.', 'icon' => 'ti-inbox'])
+<div {{ $attributes->class(['empty']) }}><div class="empty-icon"><i class="ti {{ $icon }} icon icon-lg text-secondary"></i></div><p class="empty-title">{{ $title }}</p><p class="empty-subtitle text-secondary">{{ $description }}</p>@isset($action)<div class="empty-action">{{ $action }}</div>@endisset</div>

@@ -9,13 +9,13 @@ Campus ERP adalah modular monolith Laravel 13 untuk universitas multi-kampus. Do
 - `Student`: profile, enrollment, status history, portal.
 - `Finance`: fee, invoice, payment, payment allocation.
 - `Control plane`: roles, scope, approval engine, audit log, settings.
-- `Experience`: Filament admin, Blade portal, REST API v1.
+- `Experience`: Tabler public/auth/student/lecturer shells, temporary Filament admin during parity migration, REST API v1.
 
 Setiap domain penting memakai ULID dan FK eksplisit. Data identitas mahasiswa dipisahkan dari enrollment sehingga riwayat program studi tidak menggandakan orang.
 
 ## Stack
 
-Laravel 13, PHP 8.3 local / 8.4 production, MySQL 8.4 primary, Redis/queue-ready, Filament 5, Livewire 4, Blade, Tailwind, Alpine. SQLite hanya digunakan untuk test/demo lokal saat MySQL tidak tersedia.
+Laravel 13, PHP 8.3 local / 8.4 production, MySQL 8.4 primary, Redis/queue-ready, Tabler 1.5, Livewire 4, Blade, dan temporary Filament 5/Tailwind during migration. SQLite hanya digunakan untuk test/demo lokal saat MySQL tidak tersedia.
 
 ## Request flow
 
@@ -27,4 +27,4 @@ RBAC disimpan pada `roles` dan `role_user` dengan scope sampai study program. UI
 
 ## Status
 
-Phase 1–3 MVP core: **IMPLEMENTED**. PMB, LMS, MBKM, thesis, graduation, library, HRM, procurement, accounting, PDDikti: **INCOMPLETE**, lihat `TODO_INTERNAL.md`.
+Implementasi aktual bersifat bertahap. PMB/KRS/academic record/student finance/leave/assignment/quiz sudah memiliki core service tetapi belum seluruhnya end-to-end. Modul lanjutan masih banyak yang MISSING. Sumber kebenaran status ada di docs/MODULE_COMPLETION.md dan TODO_INTERNAL.md.

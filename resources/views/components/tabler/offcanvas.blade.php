@@ -1,0 +1,2 @@
+@props(['id', 'title', 'placement' => 'start'])
+<div class="offcanvas offcanvas-{{ $placement }}" tabindex="-1" id="{{ $id }}" aria-labelledby="{{ $id }}-title"><div class="offcanvas-header"><h2 class="offcanvas-title" id="{{ $id }}-title">{{ $title }}</h2><button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Tutup"></button></div><div class="offcanvas-body">{{ $slot }}</div></div>

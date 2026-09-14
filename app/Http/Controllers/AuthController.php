@@ -20,7 +20,17 @@ class AuthController extends Controller
         }
         $request->session()->regenerate();
 
-        return Auth::user()->hasRole('mahasiswa') ? redirect()->intended(route('portal.dashboard')) : redirect()->intended('/admin');
+        $user = Auth::user();
+
+        if ($user->hasRole('mahasiswa')) {
+            return redirect()->intended(route('portal.dashboard'));
+        }
+
+        if ($user->hasRole(['dosen', 'dosen_wali', 'dosen_pembimbing'])) {
+            return redirect()->intended(route('lecturer.dashboard'));
+        }
+
+        return redirect()->intended('/admin');
     }
 
     public function destroy(Request $request)

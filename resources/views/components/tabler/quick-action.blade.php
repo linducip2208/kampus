@@ -1,0 +1,2 @@
+@props(['href', 'icon', 'title', 'description' => null, 'color' => 'primary'])
+<a href="{{ $href }}" {{ $attributes->class(['card', 'card-link', 'text-decoration-none']) }}><div class="card-body"><div class="d-flex gap-3"><span class="avatar bg-{{ $color }}-lt text-{{ $color }}"><i class="ti {{ $icon }}"></i></span><div><div class="fw-semibold text-body">{{ $title }}</div>@if($description)<div class="text-secondary small mt-1">{{ $description }}</div>@endif</div></div></div></a>

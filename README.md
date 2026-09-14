@@ -95,7 +95,7 @@ Campus ERP هو مصدر موحد لبيانات الجامعة، يقلل جد�
 ## Technology stack
 
 - Laravel 13, PHP 8.3 local, PHP 8.4+ recommended for production
-- Filament 5, Livewire 4, Blade, Tailwind CSS, Alpine.js
+- Tabler 1.5 (target UI produksi), Tabler Icons, Blade/Livewire 4; Filament 5 dan Tailwind dipertahankan sementara selama migrasi feature parity
 - MySQL 8.4+ production; SQLite for local/testing
 - Redis cache and queue, Laravel Scheduler, S3-compatible storage with local fallback
 - Sanctum REST API under /api/v1
@@ -129,7 +129,7 @@ All demo passwords are password.
 | Lecturer / Advisor | dosen@kampus.test | /lecturer |
 | Student | mahasiswa@kampus.test | /portal |
 
-Branded login: /login. Filament admin: /admin.
+Tabler branded login: /login. `/admin` masih memakai Filament sementara custom Tabler admin mencapai feature parity.
 
 ## Verification
 
@@ -163,7 +163,7 @@ Queue worker: php artisan queue:work. Scheduler: php artisan schedule:work or a 
 - docs/WORKFLOWS.md — business workflows
 - docs/API.md — API contract
 - docs/SECURITY.md — security controls
-- docs/TAILADMIN_UI.md — design system
+- docs/TABLER_DESIGN_SYSTEM.md — design system
 - docs/PDDIKTI.md — PDDikti foundation
 - docs/PAYMENT_GATEWAY.md — generic payment configuration
 - docs/MODULE_COMPLETION.md — completion percentages

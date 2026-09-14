@@ -18,7 +18,7 @@ class AuthenticationTest extends TestCase
             'admin@kampus.test' => '/admin',
             'baak@kampus.test' => '/admin',
             'finance@kampus.test' => '/admin',
-            'dosen@kampus.test' => '/admin',
+            'dosen@kampus.test' => '/lecturer',
             'mahasiswa@kampus.test' => '/portal',
         ] as $email => $destination) {
             $response = $this->from('/login')->post('/login', [

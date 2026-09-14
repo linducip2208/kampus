@@ -1,0 +1,2 @@
+@props(['name', 'label' => null, 'value' => null, 'required' => false])
+<x-tabler.form-field :name="$name" :label="$label" :required="$required"><div class="input-icon"><span class="input-icon-addon"><i class="ti ti-calendar"></i></span><input type="date" name="{{ $name }}" id="{{ $name }}" value="{{ old($name, $value) }}" {{ $attributes->class(['form-control', 'is-invalid' => $errors->has($name)]) }} @required($required)></div></x-tabler.form-field>

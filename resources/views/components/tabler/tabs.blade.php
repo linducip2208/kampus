@@ -1,0 +1,2 @@
+@props(['items' => [], 'active' => null])
+<ul class="nav nav-tabs" role="tablist">@foreach($items as $key => $item)<li class="nav-item" role="presentation">@if(isset($item['href']))<a class="nav-link {{ $active === $key ? 'active' : '' }}" href="{{ $item['href'] }}">@if(isset($item['icon']))<i class="ti {{ $item['icon'] }} me-2"></i>@endif{{ $item['label'] }}</a>@else<button type="button" class="nav-link {{ $active === $key ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#{{ $item['target'] }}" role="tab">{{ $item['label'] }}</button>@endif</li>@endforeach</ul>

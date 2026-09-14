@@ -1,0 +1,2 @@
+@props(['variant' => 'primary', 'type' => 'button', 'href' => null, 'icon' => null, 'loading' => false])
+@if($href)<a href="{{ $href }}" {{ $attributes->class(['btn', "btn-$variant"]) }}>@if($icon)<i class="ti {{ $icon }} me-2" aria-hidden="true"></i>@endif{{ $slot }}</a>@else<button type="{{ $type }}" {{ $attributes->class(['btn', "btn-$variant"]) }} @disabled($loading)>@if($loading)<span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>@elseif($icon)<i class="ti {{ $icon }} me-2" aria-hidden="true"></i>@endif{{ $slot }}</button>@endif

@@ -1,12 +1,14 @@
 <?php
 
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\DocsController;
+use App\Http\Controllers\LecturerPortalController;
 use App\Http\Controllers\MarketingController;
 use App\Http\Controllers\PortalController;
-use App\Http\Controllers\LecturerPortalController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
@@ -14,6 +16,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [MarketingController::class, 'index'])->name('home');
 Route::get('/login', [AuthController::class, 'create'])->name('login');
 Route::post('/login', [AuthController::class, 'store'])->name('login.store');
+Route::middleware('guest')->group(function () {
+    Route::get('/forgot-password', [ForgotPasswordController::class, 'create'])->name('password.request');
+    Route::post('/forgot-password', [ForgotPasswordController::class, 'store'])->name('password.email');
+    Route::get('/reset-password/{token}', [ResetPasswordController::class, 'create'])->name('password.reset');
+    Route::post('/reset-password', [ResetPasswordController::class, 'store'])->name('password.update');
+});
 Route::post('/logout', [AuthController::class, 'destroy'])->middleware('auth')->name('logout');
 Route::get('/docs', [DocsController::class, 'index'])->name('docs');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog');

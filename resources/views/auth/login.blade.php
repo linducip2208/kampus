@@ -1,8 +1,43 @@
-@extends('layouts.storefront', ['title' => 'Masuk — Campus ERP'])
+@extends('layouts.tabler.auth', ['title' => 'Masuk — Portal Universitas'])
 
 @section('content')
-<div class="mx-auto grid min-h-[calc(100vh-145px)] max-w-7xl lg:grid-cols-2">
-    <section class="relative hidden overflow-hidden bg-[#0b1220] p-12 text-white lg:flex lg:flex-col lg:justify-between"><div class="absolute -right-24 -top-24 h-80 w-80 rounded-full border border-cyan-300/20"></div><div class="absolute -bottom-32 -left-24 h-96 w-96 rounded-full bg-blue-600/20 blur-3xl"></div><div class="relative"><div class="flex items-center gap-3"><span class="grid h-11 w-11 place-items-center rounded-xl bg-cyan-400 font-bold text-[#0b1220]">C</span><span class="font-display text-xl font-bold">Campus ERP</span></div><div class="mt-28 max-w-lg"><p class="text-sm font-bold text-cyan-300">PORTAL UNIVERSITAS</p><h1 class="mt-4 font-display text-5xl font-bold leading-tight">Satu data. Banyak peran. Keputusan lebih jernih.</h1><p class="mt-6 text-lg leading-8 text-slate-300">Masuk ke ruang kerja yang mengikuti ritme kampus—dengan konteks akademik, keuangan, dan audit yang selalu tersambung.</p><div class="mt-10 grid grid-cols-3 gap-3">@foreach([['⌁','Lifecycle','terhubung'],['◌','Role','terukur'],['↗','Audit','tercatat']] as $item)<div class="rounded-2xl border border-white/10 bg-white/5 p-4"><span class="text-xl text-cyan-300">{{ $item[0] }}</span><p class="mt-5 text-sm font-bold">{{ $item[1] }}</p><p class="mt-1 text-xs text-slate-400">{{ $item[2] }}</p></div>@endforeach</div></div></div><p class="relative text-xs text-slate-500">© {{ date('Y') }} Campus ERP · Universitas Cakrawala Nusantara</p></section>
-    <section class="flex items-center justify-center px-5 py-12 sm:px-12"><div class="w-full max-w-md"><div class="mb-9 lg:hidden"><a href="{{ route('home') }}" class="flex items-center gap-3"><span class="grid h-10 w-10 place-items-center rounded-xl bg-[#0b1220] font-bold text-cyan-300">C</span><span class="font-display text-xl font-bold">Campus ERP</span></a></div><h2 class="font-display text-4xl font-bold text-slate-900">Masuk</h2><p class="mt-2 text-slate-500">Gunakan akun demo untuk menjelajahi portal kampus.</p>@if($errors->any())<div class="mt-6 rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">{{ $errors->first() }}</div>@endif<form class="mt-8 space-y-5" method="POST" action="{{ route('login.store') }}">@csrf<div><label for="email" class="mb-2 block text-sm font-semibold">Email kampus</label><input id="email" name="email" type="email" value="{{ old('email') }}" required autofocus class="w-full rounded-xl border border-slate-300 px-4 py-3.5 outline-none transition focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10" placeholder="nama@kampus.test"></div><div><label for="password" class="mb-2 block text-sm font-semibold">Kata sandi</label><input id="password" name="password" type="password" required class="w-full rounded-xl border border-slate-300 px-4 py-3.5 outline-none transition focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10" placeholder="••••••••"></div><label class="flex items-center gap-2 text-sm text-slate-600"><input type="checkbox" name="remember" class="rounded border-slate-300 text-blue-600"> Ingat perangkat ini</label><button type="submit" class="w-full rounded-xl bg-[#0b1220] px-5 py-3.5 font-bold text-white shadow-lg shadow-blue-900/10 transition hover:-translate-y-0.5 hover:bg-blue-700">Masuk ke portal</button></form><div class="my-8 flex items-center gap-4 text-xs text-slate-400"><span class="h-px flex-1 bg-slate-200"></span><span>AKUN DEMO</span><span class="h-px flex-1 bg-slate-200"></span></div><div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm"><p class="font-bold text-slate-800">Akses cepat untuk review</p><div class="mt-3 space-y-2 font-mono text-xs text-slate-600"><p><b class="font-sans">Admin</b> · admin@kampus.test / password</p><p><b class="font-sans">BAAK</b> · baak@kampus.test / password</p><p><b class="font-sans">Finance</b> · finance@kampus.test / password</p><p><b class="font-sans">Dosen</b> · dosen@kampus.test / password</p><p><b class="font-sans">Mahasiswa</b> · mahasiswa@kampus.test / password</p></div></div><p class="mt-6 text-center text-sm text-slate-500"><a class="font-semibold text-blue-600 hover:underline" href="{{ route('home') }}">← Kembali ke halaman depan</a></p></div></section>
+<div class="text-center mb-4 d-lg-none">
+    <a href="{{ route('home') }}" class="navbar-brand navbar-brand-autodark justify-content-center">
+        <span class="avatar bg-primary text-white me-2">{{ str($brand['shortName'])->substr(0, 1) }}</span>{{ $brand['shortName'] }}
+    </a>
 </div>
+<div class="card card-md shadow-sm">
+    <div class="card-body">
+        <h1 class="h2 text-center mb-2">Masuk</h1>
+        <p class="text-secondary text-center mb-4">Gunakan akun kampus untuk membuka ruang kerja sesuai peran.</p>
+
+        @if(session('status'))<x-tabler.alert type="success">{{ session('status') }}</x-tabler.alert>@endif
+        @if($errors->any())<x-tabler.alert type="danger" title="Login belum berhasil">{{ $errors->first() }}</x-tabler.alert>@endif
+
+        <form method="POST" action="{{ route('login.store') }}" autocomplete="on">
+            @csrf
+            <x-tabler.form-field name="email" label="Email kampus" required>
+                <div class="input-icon"><span class="input-icon-addon"><i class="ti ti-mail"></i></span><input id="email" name="email" type="email" value="{{ old('email') }}" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" placeholder="nama@kampus.test" required autofocus autocomplete="email"></div>
+            </x-tabler.form-field>
+            <x-tabler.form-field name="password" label="Kata sandi" required>
+                <div class="input-group input-group-flat"><span class="input-group-text"><i class="ti ti-lock"></i></span><input id="password" name="password" type="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}" required autocomplete="current-password"><span class="input-group-text"><button type="button" class="btn btn-link p-0" data-password-toggle aria-label="Tampilkan kata sandi"><i class="ti ti-eye"></i></button></span></div>
+            </x-tabler.form-field>
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <label class="form-check mb-0"><input class="form-check-input" type="checkbox" name="remember" value="1"><span class="form-check-label">Ingat perangkat ini</span></label>
+                <a href="{{ route('password.request') }}">Lupa kata sandi?</a>
+            </div>
+            <x-tabler.button type="submit" class="w-100" icon="ti-login">Masuk ke portal</x-tabler.button>
+        </form>
+    </div>
+    <div class="card-footer bg-body-tertiary">
+        <div class="fw-semibold mb-2"><i class="ti ti-flask me-1 text-primary"></i>Akun demo</div>
+        <div class="table-responsive"><table class="table table-sm table-borderless mb-0"><tbody>
+            @foreach([['Admin','admin@kampus.test'],['Rektor','rektor@kampus.test'],['BAAK','baak@kampus.test'],['Finance','finance@kampus.test'],['Dosen','dosen@kampus.test'],['Mahasiswa','mahasiswa@kampus.test']] as $account)
+                <tr><td class="fw-semibold ps-0">{{ $account[0] }}</td><td class="font-monospace text-secondary">{{ $account[1] }}</td><td class="font-monospace text-secondary pe-0">password</td></tr>
+            @endforeach
+        </tbody></table></div>
+    </div>
+</div>
+<div class="text-center text-secondary mt-3"><a href="{{ route('home') }}"><i class="ti ti-arrow-left me-1"></i>Kembali ke halaman depan</a></div>
+<script>document.querySelector('[data-password-toggle]')?.addEventListener('click', function () { const input=document.getElementById('password'); const visible=input.type==='text'; input.type=visible?'password':'text'; this.setAttribute('aria-label', visible?'Tampilkan kata sandi':'Sembunyikan kata sandi'); this.querySelector('i').className=visible?'ti ti-eye':'ti ti-eye-off'; });</script>
 @endsection

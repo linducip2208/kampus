@@ -1,0 +1,2 @@
+@props(['title', 'time' => null, 'unread' => false, 'icon' => 'ti-bell'])
+<div {{ $attributes->class(['list-group-item', 'bg-primary-lt' => $unread]) }}><div class="row align-items-center"><div class="col-auto"><span class="avatar bg-primary-lt"><i class="ti {{ $icon }}"></i></span></div><div class="col text-truncate"><div class="text-body d-block">{{ $title }}</div><div class="d-block text-secondary text-truncate mt-n1">{{ $slot }}</div></div>@if($time)<div class="col-auto text-secondary small">{{ $time }}</div>@endif</div></div>
