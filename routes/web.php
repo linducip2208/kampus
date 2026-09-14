@@ -6,6 +6,7 @@ use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\DocsController;
 use App\Http\Controllers\MarketingController;
 use App\Http\Controllers\PortalController;
+use App\Http\Controllers\LecturerPortalController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,12 @@ Route::middleware('auth')->prefix('portal')->name('portal.')->group(function () 
     Route::get('/invoices', [PortalController::class, 'invoices'])->name('invoices');
 });
 
+Route::middleware('auth')->prefix('lecturer')->name('lecturer.')->group(function () {
+    Route::get('/', [LecturerPortalController::class, 'dashboard'])->name('dashboard');
+    Route::get('/schedule', [LecturerPortalController::class, 'schedule'])->name('schedule');
+    Route::get('/classes', [LecturerPortalController::class, 'classes'])->name('classes');
+    Route::get('/advisees', [LecturerPortalController::class, 'advisees'])->name('advisees');
+});
 Route::middleware('auth')->prefix('reports')->name('reports.')->group(function () {
     Route::get('/', [ReportController::class, 'index'])->name('index');
 });

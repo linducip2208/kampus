@@ -2,17 +2,18 @@
 
 namespace Database\Seeders;
 
-use App\Models\BlogCategory;
-use App\Models\BlogPost;
 use App\Models\AcademicYear;
 use App\Models\AdmissionPath;
-use App\Models\ApprovalStep;
-use App\Models\ApprovalWorkflow;
 use App\Models\Applicant;
 use App\Models\ApplicantProgramChoice;
 use App\Models\ApplicantStatusHistory;
+use App\Models\ApprovalStep;
+use App\Models\ApprovalWorkflow;
 use App\Models\AttendanceSession;
+use App\Models\BlogCategory;
+use App\Models\BlogPost;
 use App\Models\Campus;
+use App\Models\ClassSchedule;
 use App\Models\ClassSection;
 use App\Models\Course;
 use App\Models\CourseOffering;
@@ -180,9 +181,11 @@ class DatabaseSeeder extends Seeder
         $sections = $courses->take(3)->map(function (Course $course, int $index) use ($semester, $lecturer) {
             $offering = CourseOffering::create(['semester_id' => $semester->id, 'course_id' => $course->id, 'status' => 'published']);
             $section = ClassSection::create(['course_offering_id' => $offering->id, 'code' => $course->code.'-A', 'capacity' => 40, 'room' => 'R. '.(101 + $index), 'mode' => 'offline']);
+            ClassSchedule::create(['class_section_id' => $section->id, 'day_of_week' => $index + 1, 'starts_at' => ($index + 8).':00', 'ends_at' => ($index + 10).':00', 'room' => $section->room]);
             $section->lecturers()->attach($lecturer->id, ['is_primary' => true]);
             $meeting = LectureMeeting::create(['class_section_id' => $section->id, 'meeting_number' => 1, 'meeting_date' => now()->toDateString(), 'topic' => 'Orientasi dan kontrak kuliah', 'mode' => 'offline', 'status' => 'open']);
             $session = AttendanceSession::create(['lecture_meeting_id' => $meeting->id, 'method' => 'qr', 'expires_at' => now()->addHours(4)]);
+
             return compact('course', 'section', 'session');
         });
         $plan = StudyPlan::create(['student_enrollment_id' => $enrollment->id, 'semester_id' => $semester->id, 'status' => 'approved', 'total_credits' => $sections->sum(fn ($item) => $item['course']->credits), 'submitted_at' => now()->subDays(3), 'approved_at' => now()->subDays(2), 'approved_by' => $employeeUser->id, 'advisor_note' => 'KRS telah diverifikasi.']);
