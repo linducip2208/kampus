@@ -241,6 +241,19 @@ class CampusPolicy
         if ($record instanceof \App\Models\CourseEquivalence) {
             return $record->oldCourse?->university_id === $universityId;
         }
+        if ($record instanceof \App\Models\EmploymentContract
+            || $record instanceof \App\Models\EmployeeAttendance
+            || $record instanceof \App\Models\EmployeeLeave
+            || $record instanceof \App\Models\EducationHistory
+            || $record instanceof \App\Models\Certification) {
+            return $record->employee?->university_id === $universityId;
+        }
+        if ($record instanceof \App\Models\LecturerWorkload) {
+            return $record->lecturer?->employee?->university_id === $universityId;
+        }
+        if ($record instanceof \App\Models\WorkloadActivity) {
+            return $record->workload?->lecturer?->employee?->university_id === $universityId;
+        }
 
         return true;
     }

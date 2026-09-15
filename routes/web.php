@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AcademicMasterController;
 use App\Http\Controllers\Admin\CampusServiceController;
 use App\Http\Controllers\Admin\ClassScheduleController;
 use App\Http\Controllers\Admin\GradeApprovalController;
+use App\Http\Controllers\Admin\HrmController;
 use App\Http\Controllers\Admin\OpsController;
 use App\Http\Controllers\Admin\OrganizationController;
 use App\Http\Controllers\Admin\StudentLifecycleController as AdminStudentLifecycleController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\DocsController;
 use App\Http\Controllers\LecturerAttendanceController;
+use App\Http\Controllers\LecturerBkdController;
 use App\Http\Controllers\LecturerGradeController;
 use App\Http\Controllers\LecturerLearningController;
 use App\Http\Controllers\LecturerPortalController;
@@ -76,6 +78,11 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::post('/campus-services/mbkm/{registration}/decide', [CampusServiceController::class, 'decideMbkm'])->name('campus-services.mbkm.decide');
     Route::post('/campus-services/activities/{activity}/decide', [CampusServiceController::class, 'decideActivity'])->name('campus-services.activities.decide');
     Route::get('/ops', [OpsController::class, 'index'])->name('ops.index');
+    Route::get('/hrm', [HrmController::class, 'index'])->name('hrm.index');
+    Route::post('/hrm/units', [HrmController::class, 'storeUnit'])->name('hrm.units.store');
+    Route::post('/hrm/positions', [HrmController::class, 'storePosition'])->name('hrm.positions.store');
+    Route::post('/hrm/leaves/{leave}/decide', [HrmController::class, 'decideLeave'])->name('hrm.leaves.decide');
+    Route::post('/hrm/workloads/{workload}/decide', [HrmController::class, 'decideWorkload'])->name('hrm.workloads.decide');
     Route::get('/organization', [OrganizationController::class, 'index'])->name('organization.index');
     Route::post('/organization/buildings', [OrganizationController::class, 'storeBuilding'])->name('organization.buildings.store');
     Route::post('/organization/rooms', [OrganizationController::class, 'storeRoom'])->name('organization.rooms.store');
@@ -145,6 +152,10 @@ Route::middleware('auth')->prefix('lecturer')->name('lecturer.')->group(function
     Route::get('/discussions/{discussion}', [LecturerLearningController::class, 'discussion'])->name('discussions.show');
     Route::post('/discussions/{discussion}/replies', [LecturerLearningController::class, 'replyDiscussion'])->name('discussions.reply');
     Route::post('/discussions/{discussion}/lock', [LecturerLearningController::class, 'lockDiscussion'])->name('discussions.lock');
+    Route::get('/bkd', [LecturerBkdController::class, 'index'])->name('bkd.index');
+    Route::post('/bkd/open', [LecturerBkdController::class, 'open'])->name('bkd.open');
+    Route::post('/bkd/{workload}/activities', [LecturerBkdController::class, 'addActivity'])->name('bkd.activities.store');
+    Route::post('/bkd/{workload}/submit', [LecturerBkdController::class, 'submit'])->name('bkd.submit');
 });
 Route::middleware('auth')->prefix('reports')->name('reports.')->group(function () {
     Route::get('/', [ReportController::class, 'index'])->name('index');

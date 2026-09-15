@@ -43,6 +43,9 @@
             ['label'=>'Invoice','icon'=>'ti-file-invoice','route'=>'filament.admin.resources.student-invoices.index','permission'=>'student_invoices.view'],
             ['label'=>'Pembayaran','icon'=>'ti-credit-card-pay','route'=>'filament.admin.resources.payments.index','permission'=>'payments.view'],
         ],
+        'KEPEGAWAIAN' => [
+            ['label'=>'HRM & BKD','icon'=>'ti-briefcase','route'=>'admin.hrm.index','permission'=>'audit_logs.view','roles'=>['super_admin','hr','rektor','dekan']],
+        ],
         'SISTEM' => [
             ['label'=>'Audit Log','icon'=>'ti-shield-search','route'=>'filament.admin.resources.audit-logs.index','permission'=>'audit_logs.view'],
             ['label'=>'Blog','icon'=>'ti-news','route'=>'filament.admin.resources.blog-posts.index','permission'=>'blog_posts.view','roles'=>['super_admin']],
