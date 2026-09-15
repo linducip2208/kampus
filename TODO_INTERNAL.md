@@ -16,6 +16,7 @@
 - Attendance lifecycle manual/PIN/QR-token, hashed credential, expiry, KRS eligibility, correction audit, serta Tabler student/lecturer UI.
 - GradeWorkflowService: component score, exact 100% weight validation, submit/approve/publish/lock, controlled revision, scale recalculation, audit, dan tests.
 - Tabler lecturer grade entry + scheme configuration dan scoped Tabler BAAK/rektor approval/publish/lock workspace beserta access tests.
+- AcademicRecord hanya menghitung published/locked grades, configurable repeat-course policy, dan printable bilingual temporary transcript.
 
 ## IN PROGRESS
 
@@ -27,7 +28,7 @@
 
 1. Terapkan UniversityScope saat menambah PMB/research/assets/documents dan perluas isolation tests per domain.
 2. Lanjutkan migrasi custom Tabler admin per domain tanpa memutus resource lama.
-3. Lanjutkan grade revision UI dan KHS/transcript PDF/QR, lalu LMS, assignment, quiz, leave, dan workflow portal.
+3. Lanjutkan grade revision UI dan persistent QR verification document, lalu LMS, assignment, quiz, leave, dan workflow portal.
 4. Lengkapi grading workflow, grade revision, KHS/transcript PDF/QR, dan laporan presensi agregat.
 5. Lengkapi PMB portal end-to-end, student finance, dan adapter integrasi berbasis format yang dinamis.
 6. Lanjutkan modul MISSING sesuai urutan pada `docs/MODULE_COMPLETION.md`.
@@ -40,5 +41,5 @@
 ## TEST STATUS
 
 - Auth, password reset, student/lecturer portal, schedule collision, dan attendance lifecycle suites: passing.
-- `composer validate`, `migrate:fresh --seed`, Blade cache, 59 tests/203 assertions, scoped Pint, dan Vite production build: PASS (2026-09-15).
+- `composer validate`, `migrate:fresh --seed`, Blade cache, 62 tests/213 assertions, scoped Pint, dan Vite production build: PASS (2026-09-15).
 - Source-of-truth completion matrix: `docs/MODULE_COMPLETION.md`.

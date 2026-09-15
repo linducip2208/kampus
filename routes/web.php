@@ -54,6 +54,7 @@ Route::middleware('auth')->prefix('portal')->name('portal.')->group(function () 
     Route::get('/', [PortalController::class, 'dashboard'])->name('dashboard');
     Route::get('/krs', [PortalController::class, 'krs'])->name('krs');
     Route::get('/academic-record', [PortalController::class, 'academicRecord'])->name('academic-record');
+    Route::get('/academic-record/print', [PortalController::class, 'academicRecordPrint'])->name('academic-record.print');
     Route::get('/invoices', [PortalController::class, 'invoices'])->name('invoices');
     Route::get('/attendance', [StudentAttendanceController::class, 'index'])->name('attendance.index');
     Route::post('/attendance/{session}', [StudentAttendanceController::class, 'record'])->name('attendance.record');

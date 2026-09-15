@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
             return app(CampusPolicy::class)->allows($user, $ability, $arguments[0] ?? null);
         });
 
-        View::composer(['layouts.tabler.*', 'auth.*'], function ($view): void {
+        View::composer(['layouts.tabler.*', 'auth.*', 'portal.academic-record-print'], function ($view): void {
             $view->with('brand', app(UniversityBrandingService::class)->values(auth()->user()));
         });
     }

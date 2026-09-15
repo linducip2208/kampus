@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\StudentEnrollment;
 use App\Services\Academic\AcademicRecordService;
 use App\Services\Academic\GradeCalculator;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PortalController extends Controller
@@ -51,6 +52,19 @@ class PortalController extends Controller
         return view('portal.academic-record', [
             'enrollment' => $enrollment,
             'record' => $records->forEnrollment($enrollment),
+        ]);
+    }
+
+    public function academicRecordPrint(Request $request, AcademicRecordService $records)
+    {
+        $enrollment = $this->enrollment();
+        abort_unless($enrollment, 404);
+        $locale = in_array($request->query('lang'), ['id', 'en'], true) ? $request->query('lang') : 'id';
+
+        return view('portal.academic-record-print', [
+            'enrollment' => $enrollment,
+            'record' => $records->forEnrollment($enrollment),
+            'locale' => $locale,
         ]);
     }
 }
