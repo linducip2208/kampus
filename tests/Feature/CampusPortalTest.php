@@ -22,7 +22,7 @@ class CampusPortalTest extends TestCase
     public function test_authenticated_student_can_open_portal(): void
     {
         $user = User::factory()->create();
-        $this->actingAs($user)->get('/portal')->assertNotFound();
+        $this->actingAs($user)->get('/portal')->assertForbidden();
     }
 
     public function test_seeded_student_can_open_khs_and_transcript(): void

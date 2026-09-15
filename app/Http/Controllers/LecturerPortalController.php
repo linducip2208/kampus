@@ -11,6 +11,8 @@ class LecturerPortalController extends Controller
 {
     protected function lecturer(): LecturerProfile
     {
+        abort_unless(Auth::user()?->hasRole(['dosen', 'dosen_wali', 'dosen_pembimbing']), 403);
+
         $lecturer = Auth::user()?->employee?->lecturerProfile;
 
         abort_unless($lecturer, 403, 'Akun ini belum terhubung ke profil dosen.');

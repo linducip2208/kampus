@@ -11,6 +11,8 @@ class PortalController extends Controller
 {
     protected function enrollment(): ?StudentEnrollment
     {
+        abort_unless(Auth::user()?->hasRole('mahasiswa'), 403);
+
         return Auth::user()?->studentProfile?->enrollments()->with(['studyProgram.department.faculty', 'advisor.employee', 'studyPlans.items.classSection.offering.course', 'invoices.items'])->latest()->first();
     }
 
@@ -21,6 +23,7 @@ class PortalController extends Controller
         $plan = $enrollment->studyPlans->first();
         $grades = $plan?->items->map(fn ($item) => $item->grade)->filter();
         $gpa = app(GradeCalculator::class)->ips($plan?->items ?? collect());
+
         return view('portal.dashboard', compact('enrollment', 'plan', 'gpa'));
     }
 
@@ -28,6 +31,7 @@ class PortalController extends Controller
     {
         $enrollment = $this->enrollment();
         abort_unless($enrollment, 404);
+
         return view('portal.krs', compact('enrollment'));
     }
 
@@ -35,6 +39,7 @@ class PortalController extends Controller
     {
         $enrollment = $this->enrollment();
         abort_unless($enrollment, 404);
+
         return view('portal.invoices', compact('enrollment'));
     }
 

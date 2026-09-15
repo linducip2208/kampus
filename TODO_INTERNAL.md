@@ -16,14 +16,14 @@
 ## IN PROGRESS
 
 - Phase 1: Tabler foundation, custom admin dashboard, RBAC, API/resource university isolation sudah teruji; lanjut scoping domain baru.
-- Migrasi konten public/student/lecturer dari utility UI legacy ke komponen Tabler.
+- Halaman student/lecturer yang sudah memiliki route telah dimigrasikan ke Tabler; lanjut menambah workflow portal yang masih missing.
 - Custom `/admin` Tabler aktif; Filament dipindah ke `/admin/legacy` sementara untuk mencegah kehilangan feature parity.
 
 ## NEXT
 
 1. Terapkan UniversityScope saat menambah PMB/research/assets/documents dan perluas isolation tests per domain.
 2. Bangun custom Tabler admin dashboard + permission-aware navigation tanpa memutus resource lama.
-3. Migrasikan seluruh halaman student dan lecturer ke Tabler native components.
+3. Tambahkan schedule, attendance, LMS, assignment, quiz, leave, dan action workflow pada portal Tabler.
 4. Lengkapi schedule collision, attendance lifecycle, grading workflow, grade revision, KHS/transcript PDF/QR.
 5. Lengkapi PMB portal end-to-end, student finance, dan adapter integrasi berbasis format yang dinamis.
 6. Lanjutkan modul MISSING sesuai urutan pada `docs/MODULE_COMPLETION.md`.
