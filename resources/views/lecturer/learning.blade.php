@@ -102,7 +102,7 @@
                 <div class="card-actions btn-list">
                     <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#module-{{ $section->id }}"><i class="ti ti-folder-plus me-1"></i>Modul</button>
                     <button class="btn btn-outline-warning btn-sm" data-bs-toggle="modal" data-bs-target="#assignment-{{ $section->id }}"><i class="ti ti-clipboard-plus me-1"></i>Assignment</button>
-                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#quiz-{{ $section->id }}"><i class="ti ti-help-hexagon me-1"></i>Quiz</button>
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#quiz-{{ $section->id }}"><i class="ti ti-help-hexagon me-1"></i>Quiz</button><button class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#announcement-{{ $section->id }}"><i class="ti ti-speakerphone me-1"></i>Pengumuman</button><button class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#discussion-{{ $section->id }}"><i class="ti ti-messages me-1"></i>Diskusi</button>
                 </div>
             </div>
             <div class="card-body">
@@ -206,6 +206,35 @@
                         @endforelse
                     </section>
                 </div>
+                <div class="row g-4 mt-1">
+                    <section class="col-12 col-lg-6">
+                        <h4><i class="ti ti-speakerphone me-2 text-info"></i>Pengumuman kelas</h4>
+                        <div class="list-group list-group-flush">
+                            @forelse($section->announcements as $announcement)
+                                <div class="list-group-item px-0">
+                                    <div class="d-flex justify-content-between gap-2"><span class="fw-semibold">{{ $announcement->title }}</span>@if($announcement->is_pinned)<span class="badge bg-yellow-lt text-yellow"><i class="ti ti-pin"></i> Disematkan</span>@endif</div>
+                                    <div class="small text-secondary mt-1">{{ str($announcement->body)->limit(180) }}</div>
+                                    <div class="small text-secondary mt-1">{{ $announcement->published_at?->translatedFormat('d M Y H:i') ?? 'Draft' }}</div>
+                                </div>
+                            @empty
+                                <div class="text-secondary small">Belum ada pengumuman.</div>
+                            @endforelse
+                        </div>
+                    </section>
+                    <section class="col-12 col-lg-6">
+                        <h4><i class="ti ti-messages me-2 text-success"></i>Forum diskusi</h4>
+                        <div class="list-group list-group-flush">
+                            @forelse($section->discussions as $discussion)
+                                <a href="{{ route('lecturer.discussions.show', $discussion) }}" class="list-group-item list-group-item-action px-0 d-flex justify-content-between gap-3">
+                                    <div><div class="fw-semibold">{{ $discussion->title }}</div><div class="small text-secondary">{{ $discussion->creator?->name }} &middot; {{ $discussion->posts_count }} balasan</div></div>
+                                    <x-tabler.status :value="$discussion->status" />
+                                </a>
+                            @empty
+                                <div class="text-secondary small">Belum ada diskusi.</div>
+                            @endforelse
+                        </div>
+                    </section>
+                </div>
             </div>
         </div>
     </div>
@@ -267,6 +296,28 @@
                 </div>
             </div>
             <button class="btn btn-primary w-100 mt-3" @disabled($questionBanks->sum(fn($bank) => $bank->questions->count()) === 0)>Buat quiz</button>
+        </form>
+    </x-tabler.modal>
+
+    <x-tabler.modal id="announcement-{{ $section->id }}" title="Buat pengumuman kelas">
+        <form method="POST" action="{{ route('lecturer.learning.announcements.store', $section) }}">
+            @csrf
+            <div class="mb-3"><label class="form-label">Judul</label><input name="title" class="form-control" maxlength="160" required></div>
+            <div class="mb-3"><label class="form-label">Isi pengumuman</label><textarea name="body" class="form-control" rows="6" minlength="3" maxlength="20000" required></textarea></div>
+            <div class="d-flex flex-wrap gap-3 mb-3">
+                <label class="form-check"><input type="hidden" name="is_pinned" value="0"><input type="checkbox" name="is_pinned" value="1" class="form-check-input"><span class="form-check-label">Sematkan</span></label>
+                <label class="form-check"><input type="hidden" name="publish_now" value="0"><input type="checkbox" name="publish_now" value="1" class="form-check-input" checked><span class="form-check-label">Terbitkan sekarang</span></label>
+            </div>
+            <button class="btn btn-primary w-100"><i class="ti ti-send me-2"></i>Simpan pengumuman</button>
+        </form>
+    </x-tabler.modal>
+
+    <x-tabler.modal id="discussion-{{ $section->id }}" title="Mulai diskusi kelas">
+        <form method="POST" action="{{ route('lecturer.discussions.store', $section) }}">
+            @csrf
+            <div class="mb-3"><label class="form-label">Topik</label><input name="title" class="form-control" maxlength="160" required></div>
+            <div class="mb-3"><label class="form-label">Pertanyaan atau konteks</label><textarea name="body" class="form-control" rows="6" minlength="3" maxlength="20000" required></textarea></div>
+            <button class="btn btn-primary w-100"><i class="ti ti-message-plus me-2"></i>Mulai diskusi</button>
         </form>
     </x-tabler.modal>
 @empty

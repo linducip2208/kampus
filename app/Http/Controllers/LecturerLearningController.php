@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\AssignmentSubmission;
 use App\Models\ClassSection;
 use App\Models\CourseModule;
+use App\Models\Discussion;
 use App\Models\LecturerProfile;
 use App\Models\QuestionBank;
 use App\Models\QuizAnswer;
 use App\Services\Learning\LearningAuthoringService;
+use App\Services\Learning\LearningCommunicationService;
 use App\Services\Learning\QuizAuthoringService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -25,7 +27,9 @@ class LecturerLearningController extends Controller
             'assignments.submissions.enrollment.studentProfile',
             'quizzes.questions',
             'quizzes.attempts.answers.question',
-            'quizzes.attempts.enrollment.studentProfile',
+            'quizzes.attempts.enrollment.studentProfile',            'announcements.author',
+            'discussions' => fn ($query) => $query->withCount('posts')->latest('updated_at'),
+            'discussions.creator',
         ])->orderBy('code')->get();
         $questionBanks = QuestionBank::query()
             ->where('university_id', $lecturer->employee->university_id)
@@ -91,6 +95,67 @@ class LecturerLearningController extends Controller
         $service->gradeSubmission($submission, $data['score'], $data['feedback'] ?? null, $request->user());
 
         return back()->with('success', 'Submission berhasil dinilai dan dikunci.');
+    }
+
+    public function announcement(Request $request, ClassSection $section, LearningCommunicationService $service): RedirectResponse
+    {
+        $this->lecturer($request);
+        $data = $request->validate([
+            'title' => ['required', 'string', 'max:160'],
+            'body' => ['required', 'string', 'min:3', 'max:20000'],
+            'is_pinned' => ['nullable', 'boolean'],
+            'publish_now' => ['nullable', 'boolean'],
+        ]);
+        $service->announce($section, $data, $request->user());
+
+        return back()->with('success', 'Pengumuman kelas berhasil disimpan.');
+    }
+
+    public function createDiscussion(Request $request, ClassSection $section, LearningCommunicationService $service): RedirectResponse
+    {
+        $this->lecturer($request);
+        $data = $request->validate([
+            'title' => ['required', 'string', 'max:160'],
+            'body' => ['required', 'string', 'min:3', 'max:20000'],
+        ]);
+        $discussion = $service->createDiscussion($section, $data, $request->user());
+
+        return redirect()->route('lecturer.discussions.show', $discussion)->with('success', 'Diskusi berhasil dibuat.');
+    }
+
+    public function discussion(Request $request, Discussion $discussion, LearningCommunicationService $service): View
+    {
+        $lecturer = $this->lecturer($request);
+        $discussion->load(['classSection.offering.course', 'creator', 'posts.author']);
+        $service->authorizeParticipant($discussion->classSection, $request->user());
+
+        return view('learning.discussion', [
+            'layout' => 'layouts.tabler.lecturer',
+            'heading' => 'Diskusi kelas',
+            'lecturer' => $lecturer,
+            'discussion' => $discussion,
+            'backRoute' => route('lecturer.learning.index'),
+            'replyRoute' => route('lecturer.discussions.reply', $discussion),
+            'lockRoute' => route('lecturer.discussions.lock', $discussion),
+        ]);
+    }
+
+    public function replyDiscussion(Request $request, Discussion $discussion, LearningCommunicationService $service): RedirectResponse
+    {
+        $this->lecturer($request);
+        $data = $request->validate(['body' => ['required', 'string', 'min:2', 'max:20000']]);
+        $service->reply($discussion, $data['body'], $request->user());
+
+        return back()->with('success', 'Balasan berhasil dikirim.');
+    }
+
+    public function lockDiscussion(Request $request, Discussion $discussion, LearningCommunicationService $service): RedirectResponse
+    {
+        $this->lecturer($request);
+        $data = $request->validate(['locked' => ['required', 'boolean']]);
+        $service->setLocked($discussion, $data['locked'], $request->user());
+
+        return back()->with('success', $data['locked'] ? 'Diskusi dikunci.' : 'Diskusi dibuka kembali.');
     }
 
     public function questionBank(Request $request, QuizAuthoringService $service): RedirectResponse

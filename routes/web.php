@@ -73,7 +73,9 @@ Route::middleware('auth')->prefix('portal')->name('portal.')->group(function () 
     Route::post('/quizzes/{quiz}/start', [StudentQuizController::class, 'start'])->name('quizzes.start');
     Route::get('/quiz-attempts/{attempt}', [StudentQuizController::class, 'attempt'])->name('quiz-attempts.show');
     Route::post('/quiz-attempts/{attempt}/questions/{question}', [StudentQuizController::class, 'answer'])->name('quiz-attempts.answer');
-    Route::post('/quiz-attempts/{attempt}/submit', [StudentQuizController::class, 'submit'])->name('quiz-attempts.submit');
+    Route::post('/quiz-attempts/{attempt}/submit', [StudentQuizController::class, 'submit'])->name('quiz-attempts.submit');    Route::post('/learning/sections/{section}/discussions', [StudentLearningController::class, 'createDiscussion'])->name('discussions.store');
+    Route::get('/discussions/{discussion}', [StudentLearningController::class, 'discussion'])->name('discussions.show');
+    Route::post('/discussions/{discussion}/replies', [StudentLearningController::class, 'replyDiscussion'])->name('discussions.reply');
 });
 
 Route::middleware('auth')->prefix('lecturer')->name('lecturer.')->group(function () {
@@ -97,7 +99,11 @@ Route::middleware('auth')->prefix('lecturer')->name('lecturer.')->group(function
     Route::post('/learning/submissions/{submission}/grade', [LecturerLearningController::class, 'grade'])->name('learning.submissions.grade');    Route::post('/learning/question-banks', [LecturerLearningController::class, 'questionBank'])->name('learning.question-banks.store');
     Route::post('/learning/question-banks/{bank}/questions', [LecturerLearningController::class, 'question'])->name('learning.questions.store');
     Route::post('/learning/sections/{section}/quizzes', [LecturerLearningController::class, 'quiz'])->name('learning.quizzes.store');
-    Route::post('/learning/quiz-answers/{answer}/grade', [LecturerLearningController::class, 'gradeQuizAnswer'])->name('learning.quiz-answers.grade');
+    Route::post('/learning/quiz-answers/{answer}/grade', [LecturerLearningController::class, 'gradeQuizAnswer'])->name('learning.quiz-answers.grade');    Route::post('/learning/sections/{section}/announcements', [LecturerLearningController::class, 'announcement'])->name('learning.announcements.store');
+    Route::post('/learning/sections/{section}/discussions', [LecturerLearningController::class, 'createDiscussion'])->name('discussions.store');
+    Route::get('/discussions/{discussion}', [LecturerLearningController::class, 'discussion'])->name('discussions.show');
+    Route::post('/discussions/{discussion}/replies', [LecturerLearningController::class, 'replyDiscussion'])->name('discussions.reply');
+    Route::post('/discussions/{discussion}/lock', [LecturerLearningController::class, 'lockDiscussion'])->name('discussions.lock');
 });
 Route::middleware('auth')->prefix('reports')->name('reports.')->group(function () {
     Route::get('/', [ReportController::class, 'index'])->name('index');

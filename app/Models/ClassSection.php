@@ -48,4 +48,14 @@ class ClassSection extends CampusModel
     {
         return $this->hasMany(CourseModule::class);
     }
+
+    public function announcements()
+    {
+        return $this->hasMany(CourseAnnouncement::class);
+    }
+
+    public function discussions()
+    {
+        return $this->hasMany(Discussion::class);
+    }
 }

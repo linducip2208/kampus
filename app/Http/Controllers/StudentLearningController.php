@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Assignment;
 use App\Models\ClassSection;
+use App\Models\Discussion;
 use App\Models\StudentEnrollment;
 use App\Services\Learning\AssignmentSubmissionService;
+use App\Services\Learning\LearningCommunicationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -25,7 +27,10 @@ class StudentLearningController extends Controller
                 'courseModules.contents' => fn ($query) => $query->whereNotNull('published_at')->where('published_at', '<=', now())->orderBy('position'),
                 'assignments' => fn ($query) => $query->whereIn('status', ['published', 'open'])->orderBy('due_at'),
                 'assignments.submissions' => fn ($query) => $query->where('student_enrollment_id', $enrollment->id),
-                'quizzes' => fn ($query) => $query->whereIn('status', ['published', 'open'])->orderBy('starts_at'),
+                'quizzes' => fn ($query) => $query->whereIn('status', ['published', 'open'])->orderBy('starts_at'),                'announcements' => fn ($query) => $query->whereNotNull('published_at')->where('published_at', '<=', now())->orderByDesc('is_pinned')->latest('published_at'),
+                'announcements.author',
+                'discussions' => fn ($query) => $query->withCount('posts')->latest('updated_at'),
+                'discussions.creator',
             ])
             ->orderBy('code')
             ->get();
@@ -51,6 +56,44 @@ class StudentLearningController extends Controller
         $service->submit($assignment, $enrollment, $data, $request->user());
 
         return back()->with('success', 'Tugas berhasil dikirim.');
+    }
+
+    public function createDiscussion(Request $request, ClassSection $section, LearningCommunicationService $service): RedirectResponse
+    {
+        $this->enrollment($request);
+        $data = $request->validate([
+            'title' => ['required', 'string', 'max:160'],
+            'body' => ['required', 'string', 'min:3', 'max:20000'],
+        ]);
+        $discussion = $service->createDiscussion($section, $data, $request->user());
+
+        return redirect()->route('portal.discussions.show', $discussion)->with('success', 'Diskusi berhasil dibuat.');
+    }
+
+    public function discussion(Request $request, Discussion $discussion, LearningCommunicationService $service): View
+    {
+        $enrollment = $this->enrollment($request);
+        $discussion->load(['classSection.offering.course', 'creator', 'posts.author']);
+        $service->authorizeParticipant($discussion->classSection, $request->user());
+
+        return view('learning.discussion', [
+            'layout' => 'portal.layout',
+            'heading' => 'Diskusi kelas',
+            'enrollment' => $enrollment,
+            'discussion' => $discussion,
+            'backRoute' => route('portal.learning.index'),
+            'replyRoute' => route('portal.discussions.reply', $discussion),
+            'lockRoute' => null,
+        ]);
+    }
+
+    public function replyDiscussion(Request $request, Discussion $discussion, LearningCommunicationService $service): RedirectResponse
+    {
+        $this->enrollment($request);
+        $data = $request->validate(['body' => ['required', 'string', 'min:2', 'max:20000']]);
+        $service->reply($discussion, $data['body'], $request->user());
+
+        return back()->with('success', 'Balasan berhasil dikirim.');
     }
 
     private function enrollment(Request $request): StudentEnrollment
