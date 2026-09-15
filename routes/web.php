@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ClassScheduleController;
 use App\Http\Controllers\AdminWorkspaceController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
@@ -7,11 +8,13 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\DocsController;
+use App\Http\Controllers\LecturerAttendanceController;
 use App\Http\Controllers\LecturerPortalController;
 use App\Http\Controllers\MarketingController;
 use App\Http\Controllers\PortalController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\StudentAttendanceController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [MarketingController::class, 'index'])->name('home');
@@ -36,13 +39,20 @@ Route::get('/contact', [CatalogController::class, 'contact'])->name('contact');
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/robots.txt', [SitemapController::class, 'robots'])->name('robots');
 
-Route::middleware('auth')->get('/admin', AdminWorkspaceController::class)->name('admin.dashboard');
+Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', AdminWorkspaceController::class)->name('dashboard');
+    Route::get('/schedules', [ClassScheduleController::class, 'index'])->name('schedules.index');
+    Route::post('/schedules', [ClassScheduleController::class, 'store'])->name('schedules.store');
+    Route::put('/schedules/{schedule}', [ClassScheduleController::class, 'update'])->name('schedules.update');
+});
 
 Route::middleware('auth')->prefix('portal')->name('portal.')->group(function () {
     Route::get('/', [PortalController::class, 'dashboard'])->name('dashboard');
     Route::get('/krs', [PortalController::class, 'krs'])->name('krs');
     Route::get('/academic-record', [PortalController::class, 'academicRecord'])->name('academic-record');
     Route::get('/invoices', [PortalController::class, 'invoices'])->name('invoices');
+    Route::get('/attendance', [StudentAttendanceController::class, 'index'])->name('attendance.index');
+    Route::post('/attendance/{session}', [StudentAttendanceController::class, 'record'])->name('attendance.record');
 });
 
 Route::middleware('auth')->prefix('lecturer')->name('lecturer.')->group(function () {
@@ -50,6 +60,10 @@ Route::middleware('auth')->prefix('lecturer')->name('lecturer.')->group(function
     Route::get('/schedule', [LecturerPortalController::class, 'schedule'])->name('schedule');
     Route::get('/classes', [LecturerPortalController::class, 'classes'])->name('classes');
     Route::get('/advisees', [LecturerPortalController::class, 'advisees'])->name('advisees');
+    Route::get('/attendance', [LecturerAttendanceController::class, 'index'])->name('attendance.index');
+    Route::post('/attendance/meetings/{meeting}/open', [LecturerAttendanceController::class, 'open'])->name('attendance.open');
+    Route::post('/attendance/sessions/{session}/close', [LecturerAttendanceController::class, 'close'])->name('attendance.close');
+    Route::post('/attendance/sessions/{session}/record', [LecturerAttendanceController::class, 'record'])->name('attendance.record');
 });
 Route::middleware('auth')->prefix('reports')->name('reports.')->group(function () {
     Route::get('/', [ReportController::class, 'index'])->name('index');

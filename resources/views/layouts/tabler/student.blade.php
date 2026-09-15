@@ -48,6 +48,7 @@
                     @foreach([
                         ['portal.dashboard', 'Dashboard', 'ti-dashboard'],
                         ['portal.krs', 'KRS', 'ti-books'],
+                        ['portal.attendance.index', 'Presensi', 'ti-calendar-check'],
                         ['portal.academic-record', 'KHS & Transkrip', 'ti-report-analytics'],
                         ['portal.invoices', 'Pembayaran', 'ti-credit-card'],
                     ] as $nav)

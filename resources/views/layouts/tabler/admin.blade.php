@@ -24,6 +24,7 @@
             ['label'=>'Mata Kuliah','icon'=>'ti-book','route'=>'filament.admin.resources.courses.index','permission'=>'courses.view'],
             ['label'=>'Penawaran','icon'=>'ti-calendar-plus','route'=>'filament.admin.resources.course-offerings.index','permission'=>'course_offerings.view'],
             ['label'=>'Kelas','icon'=>'ti-door','route'=>'filament.admin.resources.class-sections.index','permission'=>'class_sections.view'],
+            ['label'=>'Jadwal','icon'=>'ti-calendar-time','route'=>'admin.schedules.index','permission'=>'class_sections.view'],
         ],
         'MAHASISWA & PERKULIAHAN' => [
             ['label'=>'Mahasiswa','icon'=>'ti-users','route'=>'filament.admin.resources.student-profiles.index','permission'=>'students.view'],

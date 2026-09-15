@@ -12,19 +12,21 @@
 - LMS data baseline, assignment submission service, QuizAttemptService, dan workflow tests.
 - Tabler npm dependencies, Vite bundle, shared layouts/components, database-driven branding, light/dark/system theme.
 - Tabler auth, forgot/reset password, student shell, lecturer shell, dan regression tests.
+- Schedule service transaksional dengan validasi bentrok ruang/dosen/kelas, audit, custom Tabler admin workspace, dan regression tests.
+- Attendance lifecycle manual/PIN/QR-token, hashed credential, expiry, KRS eligibility, correction audit, serta Tabler student/lecturer UI.
 
 ## IN PROGRESS
 
 - Phase 1: Tabler foundation, custom admin dashboard, RBAC, API/resource university isolation sudah teruji; lanjut scoping domain baru.
-- Halaman student/lecturer yang sudah memiliki route telah dimigrasikan ke Tabler; lanjut menambah workflow portal yang masih missing.
+- Halaman student/lecturer aktif telah dimigrasikan ke Tabler; attendance workflow kini tersedia, lanjut grade/LMS/KRS approval.
 - Custom `/admin` Tabler aktif; Filament dipindah ke `/admin/legacy` sementara untuk mencegah kehilangan feature parity.
 
 ## NEXT
 
 1. Terapkan UniversityScope saat menambah PMB/research/assets/documents dan perluas isolation tests per domain.
-2. Bangun custom Tabler admin dashboard + permission-aware navigation tanpa memutus resource lama.
-3. Tambahkan schedule, attendance, LMS, assignment, quiz, leave, dan action workflow pada portal Tabler.
-4. Lengkapi schedule collision, attendance lifecycle, grading workflow, grade revision, KHS/transcript PDF/QR.
+2. Lanjutkan migrasi custom Tabler admin per domain tanpa memutus resource lama.
+3. Tambahkan grading, LMS, assignment, quiz, leave, dan action workflow lanjutan pada portal Tabler.
+4. Lengkapi grading workflow, grade revision, KHS/transcript PDF/QR, dan laporan presensi agregat.
 5. Lengkapi PMB portal end-to-end, student finance, dan adapter integrasi berbasis format yang dinamis.
 6. Lanjutkan modul MISSING sesuai urutan pada `docs/MODULE_COMPLETION.md`.
 
@@ -35,6 +37,6 @@
 
 ## TEST STATUS
 
-- Auth, password reset, student portal, dan lecturer portal targeted suite: passing.
-- `composer validate`, `migrate:fresh --seed`, Blade cache, 36 tests/146 assertions, scoped Pint, dan Vite production build: PASS (2026-09-15).
+- Auth, password reset, student/lecturer portal, schedule collision, dan attendance lifecycle suites: passing.
+- `composer validate`, `migrate:fresh --seed`, Blade cache, 52 tests/179 assertions, scoped Pint, dan Vite production build: PASS (2026-09-15).
 - Source-of-truth completion matrix: `docs/MODULE_COMPLETION.md`.
