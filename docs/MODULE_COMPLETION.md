@@ -20,24 +20,24 @@ Dokumen ini merekam keadaan source code aktual, bukan target PRD. Status hanya `
 | Student lifecycle & leave | PARTIAL | 85% | Ya | Ya | Leave + reactivation + status services | Ownership + scoped BAAK | Tabler approval/rejection | Tabler request/history | N/A | Tidak | Ya | Cuti dan aktif kembali end-to-end menggunakan generic approval, transaksi, reject reason, status history, dan audit. Transfer/mutasi serta multi-step workflow builder lanjutan belum lengkap. |
 | LMS & assignment | PARTIAL | 88% | Ya | Ya | Submission + authoring + communication services | KRS/class ownership guard | Assignment CRUD | Tabler material/assignment/announcement/discussion | Tabler authoring/grading/announcement/discussion | Tidak | Ya | Published content dibatasi KRS; assignment attempt/graded lock, pengumuman, forum reply, dosen lock/unlock, dan audit tersedia. Lifecycle edit/publish lanjutan serta centralized private attachment policy belum lengkap. |
 | Quiz / CBT | PARTIAL | 88% | Ya | Ya | QuizAttemptService + QuizAuthoringService | Role/KRS/class ownership guard | Belum penuh | Tabler attempt/timer/navigation/result | Tabler bank soal/builder/attempt/manual grading | Tidak | Ya | Workflow student dan lecturer usable dengan random order persisten, expiry, attempt limit, objective auto-grading, manual essay grading, feedback, dan audit. Lifecycle edit/publish/close serta API/report statistik belum lengkap. |
-| Scholarship | MISSING | 0% | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Belum diimplementasikan. |
-| MBKM, internship, KKN | MISSING | 0% | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Belum diimplementasikan. |
-| Thesis | MISSING | 0% | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Belum diimplementasikan. |
-| Yudisium & graduation | MISSING | 0% | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Belum diimplementasikan. |
-| Alumni, tracer, career | MISSING | 0% | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Portal shell saja, belum ada domain workflow. |
-| Library | MISSING | 0% | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Belum diimplementasikan. |
-| Research & community service | MISSING | 0% | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Belum diimplementasikan. |
-| Student affairs | MISSING | 0% | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Belum diimplementasikan. |
+| Scholarship | PARTIAL | 65% | Ya | Ya | ScholarshipService | Global | Belum | N/A | N/A | Tidak | Ya | Proposal/approve/reject transaksional dengan quota, approval generik, audit, dan tests; UI dan disbursement lanjutan belum ada. |
+| MBKM, internship, KKN | PARTIAL | 60% | Ya | Ya | CampusActivityService | Global | Belum | N/A | N/A | Tidak | Ya | Program, registrasi kuota, approval, dan rekognisi SKS tersedia dengan tests; konversi nilai dan portal belum penuh. |
+| Thesis | PARTIAL | 70% | Ya | Ya | ThesisService | Global | Belum | N/A | N/A | Tidak | Ya | Submit/approve/reject, jadwal sidang, grading 0-100, audit, dan tests tersedia; bimbingan log dan UI belum penuh. |
+| Yudisium & graduation | PARTIAL | 70% | Ya | Ya | GraduationService | Global | Belum | N/A | N/A | Tidak | Ya | Validasi IPK/SKS, approval, nomor SKL race-safe, transisi graduated, audit, dan tests tersedia; prosesi dan cetak ijazah belum penuh. |
+| Alumni, tracer, career | PARTIAL | 60% | Ya | Ya | GraduationService | Global | Belum | N/A | N/A | Tidak | Ya | AlumniProfile otomatis saat yudisium dan tracer survey upsert dengan audit dan tests; portal karir belum penuh. |
+| Library | PARTIAL | 65% | Ya | Ya | LibraryService | Global | Belum | N/A | N/A | Tidak | Ya | Katalog, pinjam max 3 aktif, cek stok, denda harian, audit, dan tests tersedia; UI dan reservasi belum penuh. |
+| Research & community service | PARTIAL | 60% | Ya | Ya | CampusActivityService | Global | Belum | N/A | N/A | Tidak | Ya | Project, anggota, status lifecycle, pengmas, audit, dan tests tersedia; luaran dan UI belum penuh. |
+| Student affairs | PARTIAL | 60% | Ya | Ya | CampusActivityService | Global | Belum | N/A | N/A | Tidak | Ya | Organisasi, keanggotaan, pengajuan kegiatan, dan tests tersedia; SKP dan UI belum penuh. |
 | HRM & BKD | PARTIAL | 25% | Identity only | Employee/Lecturer | Tidak | Global | Tidak lengkap | N/A | Profile/read | Lecturer read | Seed/basic | Employee identity benar; HR workflow dan BKD belum ada. |
-| Assets & procurement | MISSING | 0% | Tidak | Tidak | Tidak | Approval reusable | Tidak | N/A | N/A | Tidak | Tidak | Belum diimplementasikan. |
-| Accounting | MISSING | 0% | Tidak | Tidak | Tidak | Tidak | Tidak | N/A | N/A | Tidak | Tidak | Double-entry foundation belum tersedia. |
-| Documents & letters | MISSING | 0% | Tidak | Tidak | Tidak | Approval reusable | Tidak | Tidak | Tidak | Tidak | Tidak | Belum diimplementasikan. |
-| Notifications | PARTIAL | 25% | Laravel table | User notification relation | Laravel | Global | Tidak | Tidak | Tidak | Tidak | Tidak | Belum ada notification center/preferences/template workflow. |
+| Assets & procurement | PARTIAL | 60% | Ya | Ya | AssetService | Global | Belum | N/A | N/A | Tidak | Ya | Registrasi, pinjam/kembali transaksional, audit, dan tests tersedia; procurement dan UI belum penuh. |
+| Accounting | PARTIAL | 65% | Ya | Ya | AccountingService | Global | Belum | N/A | N/A | Tidak | Ya | CoA, jurnal double-entry balance, immutable ledger, nomor race-safe, audit, dan tests tersedia; laporan keuangan dan UI belum penuh. |
+| Documents & letters | PARTIAL | 65% | Ya | Ya | DocumentService | Global | Belum | N/A | N/A | Tidak | Ya | Template, request, approval, nomor surat race-safe, audit, dan tests tersedia; editor dan tanda tangan belum penuh. |
+| Notifications | PARTIAL | 55% | Ya | Ya | OpsFoundationService | Global | Belum | N/A | N/A | Tidak | Ya | Template per university/channel dan preferences upsert tersedia dengan tests; center UI dan dispatch queue belum penuh. |
 | Approval engine | PARTIAL | 65% | Ya | Ya | Ya | Global | Belum lengkap | Dipakai cuti | Dipakai cuti | Tidak | Ya | Generic multi-step core ada; builder dan integrasi domain lain belum lengkap. |
 | Audit log | PARTIAL | 70% | Ya | Ya | Event/service usage | View permission | Read-only Filament | N/A | N/A | Tidak | Sebagian | UI read-only tersedia; audit coverage seluruh mutasi belum lengkap. |
-| Integrations & PDDikti | MISSING | 0% | Tidak | Tidak | Tidak | Tidak | Tidak | N/A | N/A | Tidak | Tidak | Menunggu foundation adapter generik; credential eksternal akan tetap BLOCKED untuk live verification. |
+| Integrations & PDDikti | PARTIAL | 55% | Ya | Ya | OpsFoundationService | Global | Belum | N/A | N/A | Tidak | Ya | Adapter generik, fake driver, logging, retry-ready, audit, dan tests tersedia; credential live tetap BLOCKED. |
 | Reporting & export | PARTIAL | 25% | N/A | N/A | Controller dasar | Global | Satu halaman | Ringkasan | Ringkasan | Dashboard | Smoke only | Report center/filter/export queue belum lengkap. |
-| Backup & system health | MISSING | 0% | Tidak | Tidak | Tidak | Tidak | Tidak | N/A | N/A | Tidak | Tidak | Belum diimplementasikan. |
+| Backup & system health | PARTIAL | 55% | Ya | Ya | OpsFoundationService | Global | Belum | N/A | N/A | Tidak | Ya | Pencatatan backup dan health checks database/storage/queue dengan tests tersedia; scheduling dan restore UI belum penuh. |
 | Documentation & public SEO | PARTIAL | 55% | Blog ada | Blog ada | IndexNow | Public | N/A | N/A | N/A | N/A | Portal smoke | Landing/docs/blog/sitemap ada; real screenshots dan sinkronisasi seluruh modul belum selesai. |
 
 ## Blockers eksternal

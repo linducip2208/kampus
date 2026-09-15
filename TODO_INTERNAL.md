@@ -40,6 +40,6 @@
 
 ## TEST STATUS
 
-- Auth, password reset, student/lecturer portal, schedule collision, dan attendance lifecycle suites: passing.
+- Auth, password reset, student/lecturer portal, schedule collision, attendance, academic lifecycle, campus services, dan ops foundation suites: passing.
 - `migrate:fresh --seed`, 85 tests/381 assertions, scoped Pint, dan Vite production build: PASS (2026-09-15).
 - Source-of-truth completion matrix: `docs/MODULE_COMPLETION.md`.
