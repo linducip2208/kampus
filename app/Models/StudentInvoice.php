@@ -28,6 +28,11 @@ class StudentInvoice extends CampusModel
         return $this->hasMany(PaymentAllocation::class);
     }
 
+    public function installments()
+    {
+        return $this->hasMany(InvoiceInstallment::class)->orderBy('sequence');
+    }
+
     public function getOutstandingAmountAttribute(): string
     {
         $total = Money::toMinorUnits($this->total_amount);

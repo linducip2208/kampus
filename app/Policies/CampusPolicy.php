@@ -2,13 +2,28 @@
 
 namespace App\Policies;
 
+use App\Models\AlumniProfile;
+use App\Models\AssetLoan;
 use App\Models\Campus;
 use App\Models\Course;
 use App\Models\Curriculum;
 use App\Models\Faculty;
+use App\Models\Graduation;
+use App\Models\IntegrationLog;
+use App\Models\JournalLine;
+use App\Models\LetterRequest;
+use App\Models\LibraryLoan;
+use App\Models\MbkmRegistration;
+use App\Models\ResearchMember;
+use App\Models\ScholarshipAward;
+use App\Models\StudentActivity;
 use App\Models\StudentEnrollment;
+use App\Models\StudentOrganizationMember;
 use App\Models\StudentProfile;
 use App\Models\StudyProgram;
+use App\Models\ThesisDefense;
+use App\Models\ThesisProposal;
+use App\Models\TracerSurvey;
 use App\Models\University;
 use App\Models\User;
 
@@ -90,7 +105,7 @@ class CampusPolicy
             default => str($short)->snake()->plural()->toString(),
         };
 
-        return $key . '.' . $action;
+        return $key.'.'.$action;
     }
 
     private function inScope(User $user, object $record): bool
@@ -157,6 +172,59 @@ class CampusPolicy
         }
         if ($record instanceof Curriculum) {
             return $record->studyProgram?->department?->faculty?->university_id === $universityId;
+        }
+        if ($record instanceof ScholarshipAward) {
+            return $record->enrollment?->studyProgram?->department?->faculty?->university_id === $universityId;
+        }
+        if ($record instanceof ThesisProposal) {
+            return $record->enrollment?->studyProgram?->department?->faculty?->university_id === $universityId;
+        }
+        if ($record instanceof ThesisDefense) {
+            return $record->proposal?->enrollment?->studyProgram?->department?->faculty?->university_id === $universityId;
+        }
+        if ($record instanceof Graduation) {
+            return $record->enrollment?->studyProgram?->department?->faculty?->university_id === $universityId;
+        }
+        if ($record instanceof AlumniProfile) {
+            return $record->enrollment?->studyProgram?->department?->faculty?->university_id === $universityId;
+        }
+        if ($record instanceof TracerSurvey) {
+            return $record->alumni?->enrollment?->studyProgram?->department?->faculty?->university_id === $universityId;
+        }
+        if ($record instanceof LibraryLoan) {
+            return $record->enrollment?->studyProgram?->department?->faculty?->university_id === $universityId;
+        }
+        if ($record instanceof ResearchMember) {
+            if ($record->student_enrollment_id) {
+                return $record->enrollment?->studyProgram?->department?->faculty?->university_id === $universityId;
+            }
+
+            return $record->project?->university_id === $universityId;
+        }
+        if ($record instanceof StudentOrganizationMember) {
+            return $record->enrollment?->studyProgram?->department?->faculty?->university_id === $universityId;
+        }
+        if ($record instanceof StudentActivity) {
+            return $record->organization?->university_id === $universityId;
+        }
+        if ($record instanceof MbkmRegistration) {
+            return $record->enrollment?->studyProgram?->department?->faculty?->university_id === $universityId;
+        }
+        if ($record instanceof LetterRequest) {
+            if ($record->student_enrollment_id) {
+                return $record->enrollment?->studyProgram?->department?->faculty?->university_id === $universityId;
+            }
+
+            return $record->template?->university_id === $universityId;
+        }
+        if ($record instanceof AssetLoan) {
+            return $record->asset?->university_id === $universityId;
+        }
+        if ($record instanceof JournalLine) {
+            return $record->entry?->university_id === $universityId;
+        }
+        if ($record instanceof IntegrationLog) {
+            return $record->endpoint?->university_id === $universityId;
         }
 
         return true;

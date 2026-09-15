@@ -40,6 +40,7 @@
 
 ## TEST STATUS
 
-- Auth, password reset, student/lecturer portal, schedule collision, attendance, academic lifecycle, campus services, dan ops foundation suites: passing.
-- `migrate:fresh --seed`, 85 tests/381 assertions, scoped Pint, dan Vite production build: PASS (2026-09-15).
+- Auth, password reset, student/lecturer portal, schedule collision, attendance, academic lifecycle, campus services, ops foundation, isolation modul baru, advanced lifecycle, dan smoke halaman baru suites: passing.
+- `migrate:fresh --seed`, 102 tests/461 assertions, scoped Pint: PASS (2026-09-15).
+- Scope/policy/resource modul baru + 6 API ter-scope + isolation tests; quiz lifecycle publish/close; transfer/mutasi; private file manager; cicilan invoice; approval builder; reporting summary + agregat presensi + CSV; yudisium auto-transcript; admin Tabler lifecycle/services/ops + portal layanan mandiri + smoke tests.
 - Source-of-truth completion matrix: `docs/MODULE_COMPLETION.md`.

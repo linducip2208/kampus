@@ -20,6 +20,7 @@ class GraduationService
         private readonly ApprovalEngine $approval,
         private readonly StudentStatusService $status,
         private readonly NumberSequenceService $sequences,
+        private readonly AcademicDocumentService $documents,
     ) {}
 
     public function propose(StudentEnrollment $enrollment, string $semesterId, float $gpa, int $totalSks, User $requester): Graduation
@@ -81,6 +82,8 @@ class GraduationService
                 ['student_enrollment_id' => $locked->student_enrollment_id],
                 ['graduation_id' => $locked->id, 'employment_status' => 'unknown'],
             );
+
+            $this->documents->issueTemporaryTranscript($locked->enrollment->fresh(), 'id', $actor);
 
             $this->audit($actor, $locked, 'graduation.approved', ['status' => 'approved', 'certificate' => $locked->certificate_number]);
 

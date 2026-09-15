@@ -4,21 +4,41 @@ namespace App\Filament\Resources;
 
 use App\Models\AcademicYear;
 use App\Models\Applicant;
+use App\Models\Asset;
+use App\Models\AssetLoan;
 use App\Models\Assignment;
 use App\Models\AuditLog;
 use App\Models\BlogPost;
+use App\Models\ChartOfAccount;
 use App\Models\ClassSection;
+use App\Models\CommunityService;
 use App\Models\Course;
 use App\Models\CourseOffering;
 use App\Models\Curriculum;
 use App\Models\Faculty;
+use App\Models\Graduation;
+use App\Models\IntegrationEndpoint;
+use App\Models\JournalEntry;
+use App\Models\LetterRequest;
+use App\Models\LetterTemplate;
+use App\Models\LibraryBook;
+use App\Models\LibraryLoan;
+use App\Models\MbkmProgram;
+use App\Models\MbkmRegistration;
 use App\Models\Payment;
+use App\Models\ResearchProject;
+use App\Models\Scholarship;
+use App\Models\ScholarshipAward;
 use App\Models\Semester;
+use App\Models\StudentActivity;
 use App\Models\StudentEnrollment;
 use App\Models\StudentInvoice;
+use App\Models\StudentOrganization;
 use App\Models\StudentProfile;
 use App\Models\StudyPlan;
 use App\Models\StudyProgram;
+use App\Models\ThesisDefense;
+use App\Models\ThesisProposal;
 use App\Models\University;
 use App\Services\Security\UniversityScope;
 use Filament\Resources\Resource;
@@ -50,6 +70,26 @@ abstract class CampusResource extends Resource
             CourseOffering::class => $scope->relation($query, $user, 'course'),
             ClassSection::class => $scope->relation($query, $user, 'offering.course'),
             Assignment::class => $scope->relation($query, $user, 'classSection.offering.course'),
+            Scholarship::class => $scope->direct($query, $user),
+            ScholarshipAward::class => $scope->relation($query, $user, 'enrollment.studyProgram.department.faculty'),
+            ThesisProposal::class => $scope->relation($query, $user, 'enrollment.studyProgram.department.faculty'),
+            ThesisDefense::class => $scope->relation($query, $user, 'proposal.enrollment.studyProgram.department.faculty'),
+            Graduation::class => $scope->relation($query, $user, 'enrollment.studyProgram.department.faculty'),
+            LibraryBook::class => $scope->direct($query, $user),
+            LibraryLoan::class => $scope->relation($query, $user, 'enrollment.studyProgram.department.faculty'),
+            ResearchProject::class => $scope->direct($query, $user),
+            CommunityService::class => $scope->direct($query, $user),
+            StudentOrganization::class => $scope->direct($query, $user),
+            StudentActivity::class => $scope->relation($query, $user, 'organization'),
+            MbkmProgram::class => $scope->direct($query, $user),
+            MbkmRegistration::class => $scope->relation($query, $user, 'enrollment.studyProgram.department.faculty'),
+            LetterTemplate::class => $scope->direct($query, $user),
+            LetterRequest::class => $scope->relation($query, $user, 'template'),
+            Asset::class => $scope->direct($query, $user),
+            AssetLoan::class => $scope->relation($query, $user, 'asset'),
+            ChartOfAccount::class => $scope->direct($query, $user),
+            JournalEntry::class => $scope->direct($query, $user),
+            IntegrationEndpoint::class => $scope->direct($query, $user),
             AuditLog::class => $scope->relation($query, $user, 'user.roles', 'role_user.university_id'),
             BlogPost::class => $scope->relation($query, $user, 'author.employee'),
             default => $query->whereRaw('1 = 0'),

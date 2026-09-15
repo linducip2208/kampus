@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\AcademicDocumentController;
+use App\Http\Controllers\Admin\AcademicLifecycleController;
+use App\Http\Controllers\Admin\CampusServiceController;
 use App\Http\Controllers\Admin\ClassScheduleController;
 use App\Http\Controllers\Admin\GradeApprovalController;
+use App\Http\Controllers\Admin\OpsController;
 use App\Http\Controllers\Admin\StudentLifecycleController as AdminStudentLifecycleController;
 use App\Http\Controllers\AdminWorkspaceController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
@@ -17,6 +20,7 @@ use App\Http\Controllers\LecturerLearningController;
 use App\Http\Controllers\LecturerPortalController;
 use App\Http\Controllers\MarketingController;
 use App\Http\Controllers\PortalController;
+use App\Http\Controllers\PortalServicesController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\StudentAttendanceController;
@@ -61,6 +65,15 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::post('/student-lifecycle/leaves/{leave}/reject', [AdminStudentLifecycleController::class, 'rejectLeave'])->name('student-lifecycle.leaves.reject');
     Route::post('/student-lifecycle/reactivations/{reactivation}/approve', [AdminStudentLifecycleController::class, 'approveReactivation'])->name('student-lifecycle.reactivations.approve');
     Route::post('/student-lifecycle/reactivations/{reactivation}/reject', [AdminStudentLifecycleController::class, 'rejectReactivation'])->name('student-lifecycle.reactivations.reject');
+    Route::get('/academic-lifecycle', [AcademicLifecycleController::class, 'index'])->name('academic-lifecycle.index');
+    Route::post('/academic-lifecycle/scholarships/{award}/approve', [AcademicLifecycleController::class, 'approveScholarship'])->name('academic-lifecycle.scholarships.approve');
+    Route::post('/academic-lifecycle/thesis/{proposal}/approve', [AcademicLifecycleController::class, 'approveThesis'])->name('academic-lifecycle.thesis.approve');
+    Route::post('/academic-lifecycle/thesis/{proposal}/reject', [AcademicLifecycleController::class, 'rejectThesis'])->name('academic-lifecycle.thesis.reject');
+    Route::post('/academic-lifecycle/graduations/{graduation}/approve', [AcademicLifecycleController::class, 'approveGraduation'])->name('academic-lifecycle.graduations.approve');
+    Route::get('/campus-services', [CampusServiceController::class, 'index'])->name('campus-services.index');
+    Route::post('/campus-services/mbkm/{registration}/decide', [CampusServiceController::class, 'decideMbkm'])->name('campus-services.mbkm.decide');
+    Route::post('/campus-services/activities/{activity}/decide', [CampusServiceController::class, 'decideActivity'])->name('campus-services.activities.decide');
+    Route::get('/ops', [OpsController::class, 'index'])->name('ops.index');
 });
 
 Route::middleware('auth')->prefix('portal')->name('portal.')->group(function () {
@@ -80,12 +93,18 @@ Route::middleware('auth')->prefix('portal')->name('portal.')->group(function () 
     Route::post('/quizzes/{quiz}/start', [StudentQuizController::class, 'start'])->name('quizzes.start');
     Route::get('/quiz-attempts/{attempt}', [StudentQuizController::class, 'attempt'])->name('quiz-attempts.show');
     Route::post('/quiz-attempts/{attempt}/questions/{question}', [StudentQuizController::class, 'answer'])->name('quiz-attempts.answer');
-    Route::post('/quiz-attempts/{attempt}/submit', [StudentQuizController::class, 'submit'])->name('quiz-attempts.submit');    Route::post('/learning/sections/{section}/discussions', [StudentLearningController::class, 'createDiscussion'])->name('discussions.store');
+    Route::post('/quiz-attempts/{attempt}/submit', [StudentQuizController::class, 'submit'])->name('quiz-attempts.submit');
+    Route::post('/learning/sections/{section}/discussions', [StudentLearningController::class, 'createDiscussion'])->name('discussions.store');
     Route::get('/discussions/{discussion}', [StudentLearningController::class, 'discussion'])->name('discussions.show');
     Route::post('/discussions/{discussion}/replies', [StudentLearningController::class, 'replyDiscussion'])->name('discussions.reply');
     Route::get('/lifecycle', [StudentLifecycleController::class, 'index'])->name('lifecycle.index');
     Route::post('/lifecycle/leave', [StudentLifecycleController::class, 'leave'])->name('lifecycle.leave');
     Route::post('/lifecycle/reactivate', [StudentLifecycleController::class, 'reactivate'])->name('lifecycle.reactivate');
+    Route::get('/services', [PortalServicesController::class, 'index'])->name('services.index');
+    Route::post('/services/thesis', [PortalServicesController::class, 'storeThesis'])->name('services.thesis');
+    Route::post('/services/letters', [PortalServicesController::class, 'storeLetter'])->name('services.letters');
+    Route::post('/services/mbkm', [PortalServicesController::class, 'registerMbkm'])->name('services.mbkm');
+    Route::post('/services/library', [PortalServicesController::class, 'borrowBook'])->name('services.library');
 });
 
 Route::middleware('auth')->prefix('lecturer')->name('lecturer.')->group(function () {
@@ -106,10 +125,12 @@ Route::middleware('auth')->prefix('lecturer')->name('lecturer.')->group(function
     Route::post('/learning/sections/{section}/modules', [LecturerLearningController::class, 'module'])->name('learning.modules.store');
     Route::post('/learning/modules/{module}/contents', [LecturerLearningController::class, 'content'])->name('learning.contents.store');
     Route::post('/learning/sections/{section}/assignments', [LecturerLearningController::class, 'assignment'])->name('learning.assignments.store');
-    Route::post('/learning/submissions/{submission}/grade', [LecturerLearningController::class, 'grade'])->name('learning.submissions.grade');    Route::post('/learning/question-banks', [LecturerLearningController::class, 'questionBank'])->name('learning.question-banks.store');
+    Route::post('/learning/submissions/{submission}/grade', [LecturerLearningController::class, 'grade'])->name('learning.submissions.grade');
+    Route::post('/learning/question-banks', [LecturerLearningController::class, 'questionBank'])->name('learning.question-banks.store');
     Route::post('/learning/question-banks/{bank}/questions', [LecturerLearningController::class, 'question'])->name('learning.questions.store');
     Route::post('/learning/sections/{section}/quizzes', [LecturerLearningController::class, 'quiz'])->name('learning.quizzes.store');
-    Route::post('/learning/quiz-answers/{answer}/grade', [LecturerLearningController::class, 'gradeQuizAnswer'])->name('learning.quiz-answers.grade');    Route::post('/learning/sections/{section}/announcements', [LecturerLearningController::class, 'announcement'])->name('learning.announcements.store');
+    Route::post('/learning/quiz-answers/{answer}/grade', [LecturerLearningController::class, 'gradeQuizAnswer'])->name('learning.quiz-answers.grade');
+    Route::post('/learning/sections/{section}/announcements', [LecturerLearningController::class, 'announcement'])->name('learning.announcements.store');
     Route::post('/learning/sections/{section}/discussions', [LecturerLearningController::class, 'createDiscussion'])->name('discussions.store');
     Route::get('/discussions/{discussion}', [LecturerLearningController::class, 'discussion'])->name('discussions.show');
     Route::post('/discussions/{discussion}/replies', [LecturerLearningController::class, 'replyDiscussion'])->name('discussions.reply');

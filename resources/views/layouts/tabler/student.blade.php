@@ -51,6 +51,7 @@
                         ['portal.attendance.index', 'Presensi', 'ti-calendar-check'],
                         ['portal.learning.index', 'Pembelajaran', 'ti-school'],
                         ['portal.lifecycle.index', 'Cuti & Status', 'ti-user-cog'],
+                        ['portal.services.index', 'Layanan Mandiri', 'ti-apps'],
                         ['portal.academic-record', 'KHS & Transkrip', 'ti-report-analytics'],
                         ['portal.invoices', 'Pembayaran', 'ti-credit-card'],
                     ] as $nav)
