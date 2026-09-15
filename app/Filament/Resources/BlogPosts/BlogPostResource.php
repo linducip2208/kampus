@@ -9,12 +9,12 @@ use App\Filament\Resources\BlogPosts\Schemas\BlogPostForm;
 use App\Filament\Resources\BlogPosts\Tables\BlogPostsTable;
 use App\Models\BlogPost;
 use BackedEnum;
-use Filament\Resources\Resource;
+use App\Filament\Resources\CampusResource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
-class BlogPostResource extends Resource
+class BlogPostResource extends CampusResource
 {
     protected static ?string $model = BlogPost::class;
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentText;

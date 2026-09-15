@@ -2,6 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Filament\Resources\Courses\CourseResource;
+use App\Filament\Resources\StudentInvoices\StudentInvoiceResource;
+use App\Filament\Resources\StudentProfiles\StudentProfileResource;
 use App\Models\Course;
 use App\Models\Department;
 use App\Models\Faculty;
@@ -76,6 +79,21 @@ class UniversityIsolationTest extends TestCase
             ->assertOk()
             ->assertJsonCount(1, 'data')
             ->assertJsonMissing(['payment_number' => $foreignPayment->payment_number]);
+    }
+
+    public function test_filament_resource_queries_are_scoped_to_the_staff_university(): void
+    {
+        $this->seed();
+        $this->createForeignUniversityData();
+
+        $baak = User::query()->where('email', 'baak@kampus.test')->firstOrFail();
+        $this->actingAs($baak);
+        $this->assertSame(1, StudentProfileResource::getEloquentQuery()->count());
+        $this->assertSame(5, CourseResource::getEloquentQuery()->count());
+
+        $finance = User::query()->where('email', 'finance@kampus.test')->firstOrFail();
+        $this->actingAs($finance);
+        $this->assertSame(1, StudentInvoiceResource::getEloquentQuery()->count());
     }
 
     private function createForeignUniversityData(): array

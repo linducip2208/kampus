@@ -7,12 +7,12 @@ use App\Filament\Resources\AuditLogs\Schemas\AuditLogForm;
 use App\Filament\Resources\AuditLogs\Tables\AuditLogsTable;
 use App\Models\AuditLog;
 use BackedEnum;
-use Filament\Resources\Resource;
+use App\Filament\Resources\CampusResource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
-class AuditLogResource extends Resource
+class AuditLogResource extends CampusResource
 {
     protected static ?string $model = AuditLog::class;
 

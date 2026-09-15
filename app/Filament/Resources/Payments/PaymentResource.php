@@ -9,12 +9,12 @@ use App\Filament\Resources\Payments\Schemas\PaymentForm;
 use App\Filament\Resources\Payments\Tables\PaymentsTable;
 use App\Models\Payment;
 use BackedEnum;
-use Filament\Resources\Resource;
+use App\Filament\Resources\CampusResource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
-class PaymentResource extends Resource
+class PaymentResource extends CampusResource
 {
     protected static ?string $model = Payment::class;
 

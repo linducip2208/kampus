@@ -129,7 +129,7 @@ All demo passwords are password.
 | Lecturer / Advisor | dosen@kampus.test | /lecturer |
 | Student | mahasiswa@kampus.test | /portal |
 
-Tabler branded login: /login. `/admin` masih memakai Filament sementara custom Tabler admin mencapai feature parity.
+Tabler branded login: `/login`. Custom Tabler workspace: `/admin`. Filament dipertahankan sementara di `/admin/legacy` sampai seluruh management page mencapai feature parity.
 
 ## Verification
 

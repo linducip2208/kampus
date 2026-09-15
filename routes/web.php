@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminWorkspaceController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\AuthController;
@@ -34,6 +35,8 @@ Route::get('/faq', [CatalogController::class, 'faq'])->name('faq');
 Route::get('/contact', [CatalogController::class, 'contact'])->name('contact');
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/robots.txt', [SitemapController::class, 'robots'])->name('robots');
+
+Route::middleware('auth')->get('/admin', AdminWorkspaceController::class)->name('admin.dashboard');
 
 Route::middleware('auth')->prefix('portal')->name('portal.')->group(function () {
     Route::get('/', [PortalController::class, 'dashboard'])->name('dashboard');

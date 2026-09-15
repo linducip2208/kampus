@@ -9,12 +9,12 @@ use App\Filament\Resources\ClassSections\Schemas\ClassSectionForm;
 use App\Filament\Resources\ClassSections\Tables\ClassSectionsTable;
 use App\Models\ClassSection;
 use BackedEnum;
-use Filament\Resources\Resource;
+use App\Filament\Resources\CampusResource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
-class ClassSectionResource extends Resource
+class ClassSectionResource extends CampusResource
 {
     protected static ?string $model = ClassSection::class;
 

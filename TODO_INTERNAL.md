@@ -15,13 +15,13 @@
 
 ## IN PROGRESS
 
-- Phase 1: finalisasi Tabler foundation, audit RBAC, dan university query isolation.
+- Phase 1: Tabler foundation, custom admin dashboard, RBAC, API/resource university isolation sudah teruji; lanjut scoping domain baru.
 - Migrasi konten public/student/lecturer dari utility UI legacy ke komponen Tabler.
-- Custom `/admin` Tabler; Filament masih aktif sementara untuk mencegah kehilangan feature parity.
+- Custom `/admin` Tabler aktif; Filament dipindah ke `/admin/legacy` sementara untuk mencegah kehilangan feature parity.
 
 ## NEXT
 
-1. Terapkan UniversityScope pada seluruh resource admin, dashboard, PMB, research, assets, dan documents serta perluas isolation tests.
+1. Terapkan UniversityScope saat menambah PMB/research/assets/documents dan perluas isolation tests per domain.
 2. Bangun custom Tabler admin dashboard + permission-aware navigation tanpa memutus resource lama.
 3. Migrasikan seluruh halaman student dan lecturer ke Tabler native components.
 4. Lengkapi schedule collision, attendance lifecycle, grading workflow, grade revision, KHS/transcript PDF/QR.
@@ -36,5 +36,5 @@
 ## TEST STATUS
 
 - Auth, password reset, student portal, dan lecturer portal targeted suite: passing.
-- `composer validate`, `migrate:fresh --seed`, Blade cache, 29 tests/113 assertions, scoped Pint, dan Vite production build: PASS (2026-09-15).
+- `composer validate`, `migrate:fresh --seed`, Blade cache, 36 tests/146 assertions, scoped Pint, dan Vite production build: PASS (2026-09-15).
 - Source-of-truth completion matrix: `docs/MODULE_COMPLETION.md`.

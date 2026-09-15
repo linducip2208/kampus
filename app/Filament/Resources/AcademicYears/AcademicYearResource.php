@@ -9,12 +9,12 @@ use App\Filament\Resources\AcademicYears\Schemas\AcademicYearForm;
 use App\Filament\Resources\AcademicYears\Tables\AcademicYearsTable;
 use App\Models\AcademicYear;
 use BackedEnum;
-use Filament\Resources\Resource;
+use App\Filament\Resources\CampusResource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
-class AcademicYearResource extends Resource
+class AcademicYearResource extends CampusResource
 {
     protected static ?string $model = AcademicYear::class;
 

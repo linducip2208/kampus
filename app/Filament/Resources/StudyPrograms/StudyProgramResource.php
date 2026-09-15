@@ -9,14 +9,14 @@ use App\Filament\Resources\StudyPrograms\Schemas\StudyProgramForm;
 use App\Filament\Resources\StudyPrograms\Tables\StudyProgramsTable;
 use App\Models\StudyProgram;
 use BackedEnum;
-use Filament\Resources\Resource;
+use App\Filament\Resources\CampusResource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class StudyProgramResource extends Resource
+class StudyProgramResource extends CampusResource
 {
     protected static ?string $model = StudyProgram::class;
 

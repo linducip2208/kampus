@@ -9,14 +9,14 @@ use App\Filament\Resources\Universities\Schemas\UniversityForm;
 use App\Filament\Resources\Universities\Tables\UniversitiesTable;
 use App\Models\University;
 use BackedEnum;
-use Filament\Resources\Resource;
+use App\Filament\Resources\CampusResource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class UniversityResource extends Resource
+class UniversityResource extends CampusResource
 {
     protected static ?string $model = University::class;
 

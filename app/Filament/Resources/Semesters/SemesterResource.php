@@ -9,12 +9,12 @@ use App\Filament\Resources\Semesters\Schemas\SemesterForm;
 use App\Filament\Resources\Semesters\Tables\SemestersTable;
 use App\Models\Semester;
 use BackedEnum;
-use Filament\Resources\Resource;
+use App\Filament\Resources\CampusResource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
-class SemesterResource extends Resource
+class SemesterResource extends CampusResource
 {
     protected static ?string $model = Semester::class;
 

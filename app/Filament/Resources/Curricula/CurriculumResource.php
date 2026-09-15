@@ -9,12 +9,12 @@ use App\Filament\Resources\Curricula\Schemas\CurriculumForm;
 use App\Filament\Resources\Curricula\Tables\CurriculaTable;
 use App\Models\Curriculum;
 use BackedEnum;
-use Filament\Resources\Resource;
+use App\Filament\Resources\CampusResource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
-class CurriculumResource extends Resource
+class CurriculumResource extends CampusResource
 {
     protected static ?string $model = Curriculum::class;
 

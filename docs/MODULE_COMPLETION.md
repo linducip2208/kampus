@@ -5,8 +5,8 @@ Dokumen ini merekam keadaan source code aktual, bukan target PRD. Status hanya `
 | Module | Status | Completeness | Database | Model | Service | Policy | Admin UI | Student UI | Lecturer UI | API | Test | Notes |
 |---|---|---:|---|---|---|---|---|---|---|---|---|---|
 | Foundation, auth, RBAC | PARTIAL | 75% | Ya | Ya | Sebagian | Global policy | Filament legacy | Tabler shell | Tabler shell | Token auth | Ya | Login/reset password bekerja; permission granularity dan session UI belum lengkap. |
-| University isolation | PARTIAL | 60% | Scope columns | Ya | Belum terpusat | CampusPolicy | Sebagian | N/A | N/A | Sebagian | Sebagian | Record authorization dan API scope akademik/finance telah diuji; Filament serta domain lanjutan masih perlu query scoping. |
-| Tabler design system | PARTIAL | 45% | N/A | N/A | Branding | N/A | Foundation only | Shell | Shell | N/A | Smoke tests | Paket lokal, layout, komponen, dark/system theme tersedia; page content dan admin masih migrasi. |
+| University isolation | PARTIAL | 75% | Scope columns | Ya | Belum terpusat | CampusPolicy | Sebagian | N/A | N/A | Sebagian | Sebagian | Record authorization, API, dan seluruh resource Filament aktif memakai centralized UniversityScope; domain baru wajib didaftarkan dan diuji. |
+| Tabler design system | PARTIAL | 55% | N/A | N/A | Branding | N/A | Foundation only | Shell | Shell | N/A | Smoke tests | Paket lokal, layout, komponen, dark/system theme tersedia; page content dan admin masih migrasi. |
 | Organization | PARTIAL | 55% | Ya | Ya | Tidak | CampusPolicy | Filament CRUD | Tidak | Tidak | Tidak | Sebagian | University, campus, faculty, department, study program ada; building/lab belum ada. |
 | Academic master | PARTIAL | 60% | Ya | Ya | Sebagian | CampusPolicy | Filament CRUD | Read portal | Read portal | Courses | Ya | Kalender, holiday, categories/types/equivalence/rules belum lengkap. |
 | Course offering & schedule | PARTIAL | 55% | Ya | Ya | Validasi KRS | CampusPolicy | Filament CRUD | Read | Read | Tidak | Academic tests | Konflik ruang/dosen dan reschedule belum menjadi workflow lengkap. |

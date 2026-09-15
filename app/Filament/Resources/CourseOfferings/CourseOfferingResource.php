@@ -9,12 +9,12 @@ use App\Filament\Resources\CourseOfferings\Schemas\CourseOfferingForm;
 use App\Filament\Resources\CourseOfferings\Tables\CourseOfferingsTable;
 use App\Models\CourseOffering;
 use BackedEnum;
-use Filament\Resources\Resource;
+use App\Filament\Resources\CampusResource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
-class CourseOfferingResource extends Resource
+class CourseOfferingResource extends CampusResource
 {
     protected static ?string $model = CourseOffering::class;
 

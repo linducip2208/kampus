@@ -9,12 +9,12 @@ use App\Filament\Resources\Assignments\Schemas\AssignmentForm;
 use App\Filament\Resources\Assignments\Tables\AssignmentsTable;
 use App\Models\Assignment;
 use BackedEnum;
-use Filament\Resources\Resource;
+use App\Filament\Resources\CampusResource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
-class AssignmentResource extends Resource
+class AssignmentResource extends CampusResource
 {
     protected static ?string $model = Assignment::class;
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentList;

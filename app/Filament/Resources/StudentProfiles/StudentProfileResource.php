@@ -9,14 +9,14 @@ use App\Filament\Resources\StudentProfiles\Schemas\StudentProfileForm;
 use App\Filament\Resources\StudentProfiles\Tables\StudentProfilesTable;
 use App\Models\StudentProfile;
 use BackedEnum;
-use Filament\Resources\Resource;
+use App\Filament\Resources\CampusResource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class StudentProfileResource extends Resource
+class StudentProfileResource extends CampusResource
 {
     protected static ?string $model = StudentProfile::class;
 

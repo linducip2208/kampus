@@ -9,12 +9,12 @@ use App\Filament\Resources\Applicants\Schemas\ApplicantForm;
 use App\Filament\Resources\Applicants\Tables\ApplicantsTable;
 use App\Models\Applicant;
 use BackedEnum;
-use Filament\Resources\Resource;
+use App\Filament\Resources\CampusResource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
-class ApplicantResource extends Resource
+class ApplicantResource extends CampusResource
 {
     protected static ?string $model = Applicant::class;
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentCheck;

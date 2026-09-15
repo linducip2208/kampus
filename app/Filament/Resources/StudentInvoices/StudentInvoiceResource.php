@@ -9,12 +9,12 @@ use App\Filament\Resources\StudentInvoices\Schemas\StudentInvoiceForm;
 use App\Filament\Resources\StudentInvoices\Tables\StudentInvoicesTable;
 use App\Models\StudentInvoice;
 use BackedEnum;
-use Filament\Resources\Resource;
+use App\Filament\Resources\CampusResource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
-class StudentInvoiceResource extends Resource
+class StudentInvoiceResource extends CampusResource
 {
     protected static ?string $model = StudentInvoice::class;
 

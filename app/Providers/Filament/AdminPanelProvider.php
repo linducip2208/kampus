@@ -2,22 +2,21 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\AvatarProviders\CampusAvatarProvider;
+use App\Filament\Pages\Auth\Login;
+use App\Filament\Widgets\AcademicPulse;
+use App\Filament\Widgets\ExecutiveStats;
+use App\Filament\Widgets\StudentAttention;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationGroup;
 use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Navigation\NavigationGroup;
 use Filament\Widgets\AccountWidget;
-use Filament\Widgets\FilamentInfoWidget;
-use App\Filament\Widgets\ExecutiveStats;
-use App\Filament\Widgets\AcademicPulse;
-use App\Filament\Widgets\StudentAttention;
-use App\Filament\AvatarProviders\CampusAvatarProvider;
-use App\Filament\Pages\Auth\Login;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
@@ -32,7 +31,7 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
+            ->path('admin/legacy')
             ->login(Login::class)
             ->colors([
                 'primary' => Color::Blue,

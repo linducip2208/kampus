@@ -9,12 +9,12 @@ use App\Filament\Resources\StudyPlans\Schemas\StudyPlanForm;
 use App\Filament\Resources\StudyPlans\Tables\StudyPlansTable;
 use App\Models\StudyPlan;
 use BackedEnum;
-use Filament\Resources\Resource;
+use App\Filament\Resources\CampusResource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
-class StudyPlanResource extends Resource
+class StudyPlanResource extends CampusResource
 {
     protected static ?string $model = StudyPlan::class;
 

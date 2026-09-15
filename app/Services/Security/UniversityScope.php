@@ -52,6 +52,78 @@ class UniversityScope
             : $query->whereHas('employee', fn (Builder $employee) => $employee->whereIn('university_id', $ids));
     }
 
+    public function relation(Builder $query, User $user, string $relation, string $column = 'university_id'): Builder
+    {
+        if ($user->hasRole('super_admin')) {
+            return $query;
+        }
+
+        $ids = $this->assignments($user)->pluck('university_id')->filter()->unique()->values();
+
+        return $ids->isEmpty()
+            ? $query->whereRaw('1 = 0')
+            : $query->whereHas($relation, fn (Builder $related) => $related->whereIn($column, $ids));
+    }
+
+    public function enrollments(Builder $query, User $user): Builder
+    {
+        if ($user->hasRole('super_admin')) {
+            return $query;
+        }
+
+        $assignments = $this->assignments($user);
+        if ($assignments->isEmpty()) {
+            return $query->whereRaw('1 = 0');
+        }
+
+        return $query->where(function (Builder $scoped) use ($assignments): void {
+            foreach ($assignments as $assignment) {
+                $scoped->orWhere(function (Builder $enrollment) use ($assignment): void {
+                    $enrollment->whereHas(
+                        'studyProgram.department.faculty',
+                        fn (Builder $faculty) => $faculty->where('university_id', $assignment->university_id)
+                    );
+                    if ($assignment->study_program_id) {
+                        $enrollment->where('study_program_id', $assignment->study_program_id);
+                    } elseif ($assignment->faculty_id) {
+                        $enrollment->whereHas(
+                            'studyProgram.department',
+                            fn (Builder $department) => $department->where('faculty_id', $assignment->faculty_id)
+                        );
+                    }
+                });
+            }
+        });
+    }
+
+    public function studyPrograms(Builder $query, User $user): Builder
+    {
+        if ($user->hasRole('super_admin')) {
+            return $query;
+        }
+
+        $assignments = $this->assignments($user);
+        if ($assignments->isEmpty()) {
+            return $query->whereRaw('1 = 0');
+        }
+
+        return $query->where(function (Builder $scoped) use ($assignments): void {
+            foreach ($assignments as $assignment) {
+                $scoped->orWhere(function (Builder $program) use ($assignment): void {
+                    $program->whereHas(
+                        'department.faculty',
+                        fn (Builder $faculty) => $faculty->where('university_id', $assignment->university_id)
+                    );
+                    if ($assignment->study_program_id) {
+                        $program->whereKey($assignment->study_program_id);
+                    } elseif ($assignment->faculty_id) {
+                        $program->whereHas('department', fn (Builder $department) => $department->where('faculty_id', $assignment->faculty_id));
+                    }
+                });
+            }
+        });
+    }
+
     private function throughEnrollment(Builder $query, User $user, string $relation): Builder
     {
         if ($user->hasRole('super_admin')) {

@@ -9,14 +9,14 @@ use App\Filament\Resources\StudentEnrollments\Schemas\StudentEnrollmentForm;
 use App\Filament\Resources\StudentEnrollments\Tables\StudentEnrollmentsTable;
 use App\Models\StudentEnrollment;
 use BackedEnum;
-use Filament\Resources\Resource;
+use App\Filament\Resources\CampusResource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class StudentEnrollmentResource extends Resource
+class StudentEnrollmentResource extends CampusResource
 {
     protected static ?string $model = StudentEnrollment::class;
 
