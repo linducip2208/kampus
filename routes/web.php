@@ -94,7 +94,10 @@ Route::middleware('auth')->prefix('lecturer')->name('lecturer.')->group(function
     Route::post('/learning/sections/{section}/modules', [LecturerLearningController::class, 'module'])->name('learning.modules.store');
     Route::post('/learning/modules/{module}/contents', [LecturerLearningController::class, 'content'])->name('learning.contents.store');
     Route::post('/learning/sections/{section}/assignments', [LecturerLearningController::class, 'assignment'])->name('learning.assignments.store');
-    Route::post('/learning/submissions/{submission}/grade', [LecturerLearningController::class, 'grade'])->name('learning.submissions.grade');
+    Route::post('/learning/submissions/{submission}/grade', [LecturerLearningController::class, 'grade'])->name('learning.submissions.grade');    Route::post('/learning/question-banks', [LecturerLearningController::class, 'questionBank'])->name('learning.question-banks.store');
+    Route::post('/learning/question-banks/{bank}/questions', [LecturerLearningController::class, 'question'])->name('learning.questions.store');
+    Route::post('/learning/sections/{section}/quizzes', [LecturerLearningController::class, 'quiz'])->name('learning.quizzes.store');
+    Route::post('/learning/quiz-answers/{answer}/grade', [LecturerLearningController::class, 'gradeQuizAnswer'])->name('learning.quiz-answers.grade');
 });
 Route::middleware('auth')->prefix('reports')->name('reports.')->group(function () {
     Route::get('/', [ReportController::class, 'index'])->name('index');

@@ -145,7 +145,7 @@ class QuizAttemptService
                         if ($isCorrect) {
                             $total += $points;
                         }
-                    } else {
+                    } elseif ($answer) {
                         $hasManualQuestions = true;
                     }
                 }
