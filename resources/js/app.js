@@ -1,5 +1,6 @@
 import './bootstrap';
 import '@tabler/core/dist/js/tabler.min.js';
+import QRCode from 'qrcode';
 
 const media = window.matchMedia('(prefers-color-scheme: dark)');
 const preferences = ['light', 'dark', 'system'];
@@ -37,4 +38,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (entry.isIntersecting) entry.target.classList.add('visible');
     }), { threshold: 0.12 });
     document.querySelectorAll('.reveal').forEach((element) => observer.observe(element));
+
+    document.querySelectorAll('canvas[data-qr-value]').forEach((canvas) => {
+        QRCode.toCanvas(canvas, canvas.dataset.qrValue, {
+            width: Number(canvas.getAttribute('width')) || 116,
+            margin: 1,
+            color: { dark: '#182433', light: '#ffffff' },
+            errorCorrectionLevel: 'M',
+        }).catch(() => canvas.replaceWith(document.createTextNode('QR tidak dapat dibuat.')));
+    });
 });

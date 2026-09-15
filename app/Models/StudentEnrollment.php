@@ -48,6 +48,11 @@ class StudentEnrollment extends CampusModel
         return $this->hasMany(Payment::class);
     }
 
+    public function academicDocuments()
+    {
+        return $this->hasMany(AcademicDocument::class);
+    }
+
     public function quizAttempts()
     {
         return $this->hasMany(QuizAttempt::class);

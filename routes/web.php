@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AcademicDocumentController;
 use App\Http\Controllers\Admin\ClassScheduleController;
 use App\Http\Controllers\Admin\GradeApprovalController;
 use App\Http\Controllers\AdminWorkspaceController;
@@ -40,6 +41,7 @@ Route::get('/faq', [CatalogController::class, 'faq'])->name('faq');
 Route::get('/contact', [CatalogController::class, 'contact'])->name('contact');
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/robots.txt', [SitemapController::class, 'robots'])->name('robots');
+Route::get('/verify/academic-document/{token}', [AcademicDocumentController::class, 'verify'])->middleware('throttle:60,1')->name('academic-documents.verify');
 
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', AdminWorkspaceController::class)->name('dashboard');
@@ -56,6 +58,8 @@ Route::middleware('auth')->prefix('portal')->name('portal.')->group(function () 
     Route::get('/krs', [PortalController::class, 'krs'])->name('krs');
     Route::get('/academic-record', [PortalController::class, 'academicRecord'])->name('academic-record');
     Route::get('/academic-record/print', [PortalController::class, 'academicRecordPrint'])->name('academic-record.print');
+    Route::post('/academic-record/documents', [AcademicDocumentController::class, 'issue'])->name('academic-documents.issue');
+    Route::get('/academic-record/documents/{document}', [AcademicDocumentController::class, 'show'])->name('academic-documents.show');
     Route::get('/invoices', [PortalController::class, 'invoices'])->name('invoices');
     Route::get('/attendance', [StudentAttendanceController::class, 'index'])->name('attendance.index');
     Route::post('/attendance/{session}', [StudentAttendanceController::class, 'record'])->name('attendance.record');

@@ -16,7 +16,7 @@
 - Attendance lifecycle manual/PIN/QR-token, hashed credential, expiry, KRS eligibility, correction audit, serta Tabler student/lecturer UI.
 - GradeWorkflowService: component score, exact 100% weight validation, submit/approve/publish/lock, controlled revision, scale recalculation, audit, dan tests.
 - Tabler lecturer grade entry + scheme configuration, scoped BAAK/rektor approval/publish/lock, serta request/approve/reject revisi nilai terkunci dengan audit dan access tests.
-- AcademicRecord hanya menghitung published/locked grades, configurable repeat-course policy, dan printable bilingual temporary transcript.
+- AcademicRecord hanya menghitung published/locked grades, configurable repeat-course policy, printable bilingual transcript, serta persistent immutable transcript snapshot dengan checksum, QR, nomor race-safe, dan public verification.
 
 ## IN PROGRESS
 
@@ -28,8 +28,8 @@
 
 1. Terapkan UniversityScope saat menambah PMB/research/assets/documents dan perluas isolation tests per domain.
 2. Lanjutkan migrasi custom Tabler admin per domain tanpa memutus resource lama.
-3. Implementasikan persistent academic document + QR verification, lalu LMS, assignment, quiz, leave, dan workflow portal.
-4. Lengkapi KHS/transcript persistent PDF/QR, API nilai, dan laporan presensi agregat.
+3. Lengkapi API nilai/dokumen akademik, lalu LMS, assignment, quiz, leave, dan workflow portal.
+4. Lengkapi final transcript lifecycle melalui graduation, API nilai, dan laporan presensi agregat.
 5. Lengkapi PMB portal end-to-end, student finance, dan adapter integrasi berbasis format yang dinamis.
 6. Lanjutkan modul MISSING sesuai urutan pada `docs/MODULE_COMPLETION.md`.
 
@@ -41,5 +41,5 @@
 ## TEST STATUS
 
 - Auth, password reset, student/lecturer portal, schedule collision, dan attendance lifecycle suites: passing.
-- `composer validate`, `migrate:fresh --seed`, Blade cache, 63 tests/221 assertions, scoped Pint, dan Vite production build: PASS (2026-09-15).
+- `composer validate`, `migrate:fresh --seed`, Blade cache, 66 tests/240 assertions, scoped Pint, dan Vite production build: PASS (2026-09-15).
 - Source-of-truth completion matrix: `docs/MODULE_COMPLETION.md`.
