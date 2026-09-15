@@ -14,6 +14,7 @@
 - Tabler auth, forgot/reset password, student shell, lecturer shell, dan regression tests.
 - Schedule service transaksional dengan validasi bentrok ruang/dosen/kelas, audit, custom Tabler admin workspace, dan regression tests.
 - Attendance lifecycle manual/PIN/QR-token, hashed credential, expiry, KRS eligibility, correction audit, serta Tabler student/lecturer UI.
+- GradeWorkflowService: component score, exact 100% weight validation, submit/approve/publish/lock, controlled revision, scale recalculation, audit, dan tests.
 
 ## IN PROGRESS
 
@@ -25,7 +26,7 @@
 
 1. Terapkan UniversityScope saat menambah PMB/research/assets/documents dan perluas isolation tests per domain.
 2. Lanjutkan migrasi custom Tabler admin per domain tanpa memutus resource lama.
-3. Tambahkan grading, LMS, assignment, quiz, leave, dan action workflow lanjutan pada portal Tabler.
+3. Hubungkan GradeWorkflowService ke Tabler lecturer entry dan admin approval, lalu LMS, assignment, quiz, leave, dan workflow portal.
 4. Lengkapi grading workflow, grade revision, KHS/transcript PDF/QR, dan laporan presensi agregat.
 5. Lengkapi PMB portal end-to-end, student finance, dan adapter integrasi berbasis format yang dinamis.
 6. Lanjutkan modul MISSING sesuai urutan pada `docs/MODULE_COMPLETION.md`.
@@ -38,5 +39,5 @@
 ## TEST STATUS
 
 - Auth, password reset, student/lecturer portal, schedule collision, dan attendance lifecycle suites: passing.
-- `composer validate`, `migrate:fresh --seed`, Blade cache, 52 tests/179 assertions, scoped Pint, dan Vite production build: PASS (2026-09-15).
+- `composer validate`, `migrate:fresh --seed`, Blade cache, 55 tests/191 assertions, scoped Pint, dan Vite production build: PASS (2026-09-15).
 - Source-of-truth completion matrix: `docs/MODULE_COMPLETION.md`.

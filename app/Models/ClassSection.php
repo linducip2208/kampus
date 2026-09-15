@@ -29,6 +29,11 @@ class ClassSection extends CampusModel
         return $this->hasMany(StudyPlanItem::class);
     }
 
+    public function gradingComponents()
+    {
+        return $this->hasMany(GradingComponent::class);
+    }
+
     public function assignments()
     {
         return $this->hasMany(Assignment::class);
