@@ -6,6 +6,9 @@ class QuizAttempt extends CampusModel
 {
     protected $casts = [
         'started_at' => 'datetime',
+        'expires_at' => 'datetime',
+        'question_order' => 'array',
+        'option_order' => 'array',
         'submitted_at' => 'datetime',
         'score' => 'decimal:2',
     ];

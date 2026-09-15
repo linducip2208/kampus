@@ -9,6 +9,7 @@ class QuizAnswer extends CampusModel
         'is_correct' => 'boolean',
         'score' => 'decimal:2',
         'answered_at' => 'datetime',
+        'graded_at' => 'datetime',
     ];
 
     public function attempt()
@@ -19,5 +20,10 @@ class QuizAnswer extends CampusModel
     public function question()
     {
         return $this->belongsTo(Question::class);
+    }
+
+    public function grader()
+    {
+        return $this->belongsTo(User::class, 'graded_by');
     }
 }

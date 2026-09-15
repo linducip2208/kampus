@@ -20,6 +20,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\StudentAttendanceController;
 use App\Http\Controllers\StudentLearningController;
+use App\Http\Controllers\StudentQuizController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [MarketingController::class, 'index'])->name('home');
@@ -68,6 +69,11 @@ Route::middleware('auth')->prefix('portal')->name('portal.')->group(function () 
     Route::get('/learning', [StudentLearningController::class, 'index'])->name('learning.index');
     Route::get('/assignments/{assignment}', [StudentLearningController::class, 'assignment'])->name('assignments.show');
     Route::post('/assignments/{assignment}', [StudentLearningController::class, 'submit'])->name('assignments.submit');
+    Route::get('/quizzes/{quiz}', [StudentQuizController::class, 'show'])->name('quizzes.show');
+    Route::post('/quizzes/{quiz}/start', [StudentQuizController::class, 'start'])->name('quizzes.start');
+    Route::get('/quiz-attempts/{attempt}', [StudentQuizController::class, 'attempt'])->name('quiz-attempts.show');
+    Route::post('/quiz-attempts/{attempt}/questions/{question}', [StudentQuizController::class, 'answer'])->name('quiz-attempts.answer');
+    Route::post('/quiz-attempts/{attempt}/submit', [StudentQuizController::class, 'submit'])->name('quiz-attempts.submit');
 });
 
 Route::middleware('auth')->prefix('lecturer')->name('lecturer.')->group(function () {
