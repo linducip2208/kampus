@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\CampusServiceController;
 use App\Http\Controllers\Admin\ClassScheduleController;
 use App\Http\Controllers\Admin\GradeApprovalController;
 use App\Http\Controllers\Admin\OpsController;
+use App\Http\Controllers\Admin\OrganizationController;
 use App\Http\Controllers\Admin\StudentLifecycleController as AdminStudentLifecycleController;
 use App\Http\Controllers\AdminWorkspaceController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
@@ -74,6 +75,10 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::post('/campus-services/mbkm/{registration}/decide', [CampusServiceController::class, 'decideMbkm'])->name('campus-services.mbkm.decide');
     Route::post('/campus-services/activities/{activity}/decide', [CampusServiceController::class, 'decideActivity'])->name('campus-services.activities.decide');
     Route::get('/ops', [OpsController::class, 'index'])->name('ops.index');
+    Route::get('/organization', [OrganizationController::class, 'index'])->name('organization.index');
+    Route::post('/organization/buildings', [OrganizationController::class, 'storeBuilding'])->name('organization.buildings.store');
+    Route::post('/organization/rooms', [OrganizationController::class, 'storeRoom'])->name('organization.rooms.store');
+    Route::post('/organization/laboratories', [OrganizationController::class, 'storeLaboratory'])->name('organization.laboratories.store');
 });
 
 Route::middleware('auth')->prefix('portal')->name('portal.')->group(function () {

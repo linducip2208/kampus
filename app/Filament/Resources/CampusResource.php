@@ -9,6 +9,7 @@ use App\Models\AssetLoan;
 use App\Models\Assignment;
 use App\Models\AuditLog;
 use App\Models\BlogPost;
+use App\Models\Building;
 use App\Models\ChartOfAccount;
 use App\Models\ClassSection;
 use App\Models\CommunityService;
@@ -19,6 +20,7 @@ use App\Models\Faculty;
 use App\Models\Graduation;
 use App\Models\IntegrationEndpoint;
 use App\Models\JournalEntry;
+use App\Models\Laboratory;
 use App\Models\LetterRequest;
 use App\Models\LetterTemplate;
 use App\Models\LibraryBook;
@@ -27,6 +29,7 @@ use App\Models\MbkmProgram;
 use App\Models\MbkmRegistration;
 use App\Models\Payment;
 use App\Models\ResearchProject;
+use App\Models\Room;
 use App\Models\Scholarship;
 use App\Models\ScholarshipAward;
 use App\Models\Semester;
@@ -90,6 +93,9 @@ abstract class CampusResource extends Resource
             ChartOfAccount::class => $scope->direct($query, $user),
             JournalEntry::class => $scope->direct($query, $user),
             IntegrationEndpoint::class => $scope->direct($query, $user),
+            Building::class => $scope->relation($query, $user, 'campus'),
+            Room::class => $scope->relation($query, $user, 'building.campus'),
+            Laboratory::class => $scope->relation($query, $user, 'department.faculty'),
             AuditLog::class => $scope->relation($query, $user, 'user.roles', 'role_user.university_id'),
             BlogPost::class => $scope->relation($query, $user, 'author.employee'),
             default => $query->whereRaw('1 = 0'),

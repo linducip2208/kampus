@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\AlumniProfile;
 use App\Models\AssetLoan;
+use App\Models\Building;
 use App\Models\Campus;
 use App\Models\Course;
 use App\Models\Curriculum;
@@ -11,10 +12,12 @@ use App\Models\Faculty;
 use App\Models\Graduation;
 use App\Models\IntegrationLog;
 use App\Models\JournalLine;
+use App\Models\Laboratory;
 use App\Models\LetterRequest;
 use App\Models\LibraryLoan;
 use App\Models\MbkmRegistration;
 use App\Models\ResearchMember;
+use App\Models\Room;
 use App\Models\ScholarshipAward;
 use App\Models\StudentActivity;
 use App\Models\StudentEnrollment;
@@ -225,6 +228,15 @@ class CampusPolicy
         }
         if ($record instanceof IntegrationLog) {
             return $record->endpoint?->university_id === $universityId;
+        }
+        if ($record instanceof Building) {
+            return $record->campus?->university_id === $universityId;
+        }
+        if ($record instanceof Room) {
+            return $record->building?->campus?->university_id === $universityId;
+        }
+        if ($record instanceof Laboratory) {
+            return $record->department?->faculty?->university_id === $universityId;
         }
 
         return true;
