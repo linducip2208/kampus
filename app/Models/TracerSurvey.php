@@ -10,4 +10,9 @@ class TracerSurvey extends CampusModel
     {
         return $this->belongsTo(AlumniProfile::class, 'alumni_profile_id');
     }
+
+    public function responses()
+    {
+        return $this->hasMany(TracerResponse::class);
+    }
 }

@@ -3,18 +3,52 @@
 namespace App\Services\Academic;
 
 use App\Models\AuditLog;
+use App\Models\InvoiceDiscount;
 use App\Models\Scholarship;
 use App\Models\ScholarshipAward;
+use App\Models\ScholarshipPeriod;
 use App\Models\StudentEnrollment;
+use App\Models\StudentInvoice;
 use App\Models\User;
 use App\Services\Approval\ApprovalEngine;
+use App\Services\Finance\FinanceAdjustmentService;
 use App\Support\Money;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class ScholarshipService
 {
-    public function __construct(private readonly ApprovalEngine $approval) {}
+    public function __construct(
+        private readonly ApprovalEngine $approval,
+        private readonly FinanceAdjustmentService $adjustments,
+    ) {}
+
+    public function openPeriod(Scholarship $scholarship, string $semesterId, string $opensOn, string $closesOn, int $quota): ScholarshipPeriod
+    {
+        if ($closesOn < $opensOn) {
+            throw ValidationException::withMessages(['closes_on' => 'Penutupan harus setelah pembukaan.']);
+        }
+
+        return ScholarshipPeriod::query()->updateOrCreate(
+            ['scholarship_id' => $scholarship->id, 'semester_id' => $semesterId],
+            ['opens_on' => $opensOn, 'closes_on' => $closesOn, 'quota' => $quota, 'status' => 'open'],
+        );
+    }
+
+    public function disburse(ScholarshipAward $award, StudentInvoice $invoice, User $actor): InvoiceDiscount
+    {
+        return DB::transaction(function () use ($award, $invoice, $actor) {
+            $locked = ScholarshipAward::query()->lockForUpdate()->findOrFail($award->id);
+            if ($locked->status !== 'approved') {
+                throw ValidationException::withMessages(['award' => 'Hanya award approved yang dapat dicairkan.']);
+            }
+            if ($invoice->student_enrollment_id !== $locked->student_enrollment_id) {
+                throw ValidationException::withMessages(['invoice' => 'Invoice milik enrollment lain.']);
+            }
+
+            return $this->adjustments->grantDiscount($invoice, 'scholarship', $locked->amount, 'Beasiswa '.$locked->scholarship->name, $actor, $locked->id);
+        });
+    }
 
     public function createScholarship(string $universityId, array $data): Scholarship
     {

@@ -30,4 +30,9 @@ class Graduation extends CampusModel
     {
         return $this->morphMany(ApprovalRequest::class, 'approvable');
     }
+
+    public function clearances()
+    {
+        return $this->hasMany(GraduationClearance::class);
+    }
 }

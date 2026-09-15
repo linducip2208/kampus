@@ -11,6 +11,16 @@ class ThesisDefense extends CampusModel
         return $this->belongsTo(ThesisProposal::class, 'thesis_proposal_id');
     }
 
+    public function examiners()
+    {
+        return $this->hasMany(ThesisExaminer::class);
+    }
+
+    public function revisions()
+    {
+        return $this->hasMany(ThesisRevision::class);
+    }
+
     public function gradedBy()
     {
         return $this->belongsTo(User::class, 'graded_by');

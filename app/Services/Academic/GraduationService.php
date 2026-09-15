@@ -5,6 +5,8 @@ namespace App\Services\Academic;
 use App\Models\AlumniProfile;
 use App\Models\AuditLog;
 use App\Models\Graduation;
+use App\Models\GraduationClearance;
+use App\Models\GraduationPeriod;
 use App\Models\StudentEnrollment;
 use App\Models\TracerSurvey;
 use App\Models\User;
@@ -53,12 +55,45 @@ class GraduationService
         });
     }
 
+    public function openPeriod(string $universityId, string $semesterId, string $name, string $opensOn, string $closesOn, ?string $ceremonyOn = null): GraduationPeriod
+    {
+        if ($closesOn < $opensOn) {
+            throw ValidationException::withMessages(['closes_on' => 'Penutupan harus setelah pembukaan.']);
+        }
+
+        return GraduationPeriod::query()->updateOrCreate(
+            ['university_id' => $universityId, 'semester_id' => $semesterId],
+            ['name' => trim($name), 'opens_on' => $opensOn, 'closes_on' => $closesOn, 'ceremony_on' => $ceremonyOn, 'status' => 'open'],
+        );
+    }
+
+    public function checkClearance(Graduation $graduation, string $kind, bool $cleared, User $actor, ?string $note = null): GraduationClearance
+    {
+        if (! in_array($kind, ['academic', 'finance', 'library', 'thesis'], true)) {
+            throw ValidationException::withMessages(['kind' => 'Jenis clearance tidak valid.']);
+        }
+
+        $clearance = GraduationClearance::query()->updateOrCreate(
+            ['graduation_id' => $graduation->id, 'kind' => $kind],
+            ['status' => $cleared ? 'cleared' : 'blocked', 'checked_by' => $actor->id, 'checked_at' => now(), 'note' => $note],
+        );
+        $this->audit($actor, $graduation, 'graduation.clearance_checked', ['kind' => $kind, 'status' => $clearance->status]);
+
+        return $clearance->fresh();
+    }
+
     public function approve(Graduation $graduation, User $actor): Graduation
     {
         return DB::transaction(function () use ($graduation, $actor) {
-            $locked = Graduation::query()->with('enrollment.studyProgram.department.faculty')->lockForUpdate()->findOrFail($graduation->id);
+            $locked = Graduation::query()->with(['enrollment.studyProgram.department.faculty', 'clearances'])->lockForUpdate()->findOrFail($graduation->id);
             if ($locked->status !== 'proposed') {
                 throw ValidationException::withMessages(['graduation' => 'Pengajuan yudisium sudah diproses.']);
+            }
+            $cleared = $locked->clearances->where('status', 'cleared')->pluck('kind')->unique()->values()->all();
+            foreach (['academic', 'finance', 'library', 'thesis'] as $required) {
+                if (! in_array($required, $cleared, true)) {
+                    throw ValidationException::withMessages(['clearance' => "Clearance {$required} belum lolos."]);
+                }
             }
             $approval = $locked->approvalRequests()->where('status', 'pending')->latest()->firstOrFail();
             $result = $this->approval->act($approval, $actor, 'approved');

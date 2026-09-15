@@ -31,6 +31,11 @@ class ThesisProposal extends CampusModel
         return $this->hasMany(ThesisDefense::class);
     }
 
+    public function guidances()
+    {
+        return $this->hasMany(ThesisGuidance::class)->orderBy('created_at');
+    }
+
     public function approvalRequests()
     {
         return $this->morphMany(ApprovalRequest::class, 'approvable');

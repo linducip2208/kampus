@@ -260,6 +260,42 @@ class CampusPolicy
         if ($record instanceof \App\Models\ApplicantDocument || $record instanceof \App\Models\ApplicantPayment) {
             return $record->applicant?->university_id === $universityId;
         }
+        if ($record instanceof \App\Models\ScholarshipPeriod) {
+            return $record->scholarship?->university_id === $universityId;
+        }
+        if ($record instanceof \App\Models\ThesisGuidance) {
+            return $record->proposal?->enrollment?->studyProgram?->department?->faculty?->university_id === $universityId;
+        }
+        if ($record instanceof \App\Models\ThesisExaminer || $record instanceof \App\Models\ThesisRevision) {
+            return $record->defense?->proposal?->enrollment?->studyProgram?->department?->faculty?->university_id === $universityId;
+        }
+        if ($record instanceof \App\Models\GraduationPeriod) {
+            return $record->university_id === $universityId;
+        }
+        if ($record instanceof \App\Models\GraduationClearance) {
+            return $record->graduation?->enrollment?->studyProgram?->department?->faculty?->university_id === $universityId;
+        }
+        if ($record instanceof \App\Models\TracerSection) {
+            return $record->university_id === $universityId;
+        }
+        if ($record instanceof \App\Models\TracerQuestion) {
+            return $record->section?->university_id === $universityId;
+        }
+        if ($record instanceof \App\Models\TracerOption) {
+            return $record->question?->section?->university_id === $universityId;
+        }
+        if ($record instanceof \App\Models\TracerResponse) {
+            return $record->survey?->alumni?->enrollment?->studyProgram?->department?->faculty?->university_id === $universityId;
+        }
+        if ($record instanceof \App\Models\Company) {
+            return $record->university_id === $universityId;
+        }
+        if ($record instanceof \App\Models\JobVacancy) {
+            return $record->company?->university_id === $universityId;
+        }
+        if ($record instanceof \App\Models\JobApplication) {
+            return $record->alumni?->enrollment?->studyProgram?->department?->faculty?->university_id === $universityId;
+        }
 
         return true;
     }

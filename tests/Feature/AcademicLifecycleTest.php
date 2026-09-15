@@ -86,6 +86,9 @@ class AcademicLifecycleTest extends TestCase
         $graduation = app(GraduationService::class)->propose($enrollment, $semester->id, 3.65, 148, $admin);
         $this->assertSame('Dengan Pujian', $graduation->predicate);
 
+        foreach (['academic', 'finance', 'library', 'thesis'] as $kind) {
+            app(GraduationService::class)->checkClearance($graduation, $kind, true, $admin, 'Lolos.');
+        }
         $approved = app(GraduationService::class)->approve($graduation, $admin);
         $this->assertSame('approved', $approved->status);
         $this->assertNotNull($approved->certificate_number);

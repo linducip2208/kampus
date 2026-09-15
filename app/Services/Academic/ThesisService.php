@@ -5,7 +5,10 @@ namespace App\Services\Academic;
 use App\Models\AuditLog;
 use App\Models\StudentEnrollment;
 use App\Models\ThesisDefense;
+use App\Models\ThesisExaminer;
+use App\Models\ThesisGuidance;
 use App\Models\ThesisProposal;
+use App\Models\ThesisRevision;
 use App\Models\User;
 use App\Services\Approval\ApprovalEngine;
 use Illuminate\Support\Facades\DB;
@@ -116,6 +119,84 @@ class ThesisService
                 'graded_by' => $actor->id,
                 'graded_at' => now(),
             ])->save();
+
+            return $locked->fresh();
+        });
+    }
+
+    public function recordGuidance(ThesisProposal $proposal, ?string $studentNote, ?string $supervisorNote, User $actor, ?string $attachmentPath = null): ThesisGuidance
+    {
+        $locked = ThesisProposal::query()->findOrFail($proposal->id);
+        if (! in_array($locked->status, ['approved', 'submitted'], true)) {
+            throw ValidationException::withMessages(['proposal' => 'Bimbingan hanya untuk proposal aktif.']);
+        }
+
+        $guidance = ThesisGuidance::query()->create([
+            'thesis_proposal_id' => $locked->id,
+            'student_note' => $studentNote,
+            'supervisor_note' => $supervisorNote,
+            'attachment_path' => $attachmentPath,
+            'guided_at' => $supervisorNote ? now() : null,
+        ]);
+        $this->audit($actor, $locked, 'thesis.guidance_recorded', ['guidance_id' => $guidance->id]);
+
+        return $guidance->fresh();
+    }
+
+    public function addExaminer(ThesisDefense $defense, string $lecturerProfileId, string $role, User $actor): ThesisExaminer
+    {
+        if (! in_array($role, ['chair', 'examiner', 'secretary'], true)) {
+            throw ValidationException::withMessages(['role' => 'Peran penguji tidak valid.']);
+        }
+
+        $examiner = ThesisExaminer::query()->firstOrCreate(
+            ['thesis_defense_id' => $defense->id, 'lecturer_profile_id' => $lecturerProfileId],
+            ['role' => $role],
+        );
+        $this->audit($actor, $defense->proposal, 'thesis.examiner_assigned', ['role' => $role]);
+
+        return $examiner->fresh();
+    }
+
+    public function scoreExaminer(ThesisExaminer $examiner, float $score, ?string $note, User $actor): ThesisDefense
+    {
+        return DB::transaction(function () use ($examiner, $score, $note, $actor) {
+            if ($score < 0 || $score > 100) {
+                throw ValidationException::withMessages(['score' => 'Nilai 0-100.']);
+            }
+            $locked = ThesisExaminer::query()->with('defense.examiners')->lockForUpdate()->findOrFail($examiner->id);
+            $locked->forceFill(['score' => number_format($score, 2, '.', ''), 'note' => $note])->save();
+
+            $defense = ThesisDefense::query()->with('examiners')->lockForUpdate()->findOrFail($locked->thesis_defense_id);
+            $scores = $defense->examiners->pluck('score')->filter(fn ($value) => $value !== null)->map(fn ($value) => (float) $value);
+            if ($scores->isNotEmpty()) {
+                $average = $scores->avg();
+                $defense->forceFill([
+                    'score' => number_format($average, 2, '.', ''),
+                    'grade' => $average >= 85 ? 'A' : ($average >= 70 ? 'B' : ($average >= 60 ? 'C' : 'E')),
+                    'status' => 'graded',
+                    'graded_by' => $actor->id,
+                    'graded_at' => now(),
+                ])->save();
+            }
+
+            return $defense->fresh();
+        });
+    }
+
+    public function addRevision(ThesisDefense $defense, string $item, User $actor): ThesisRevision
+    {
+        $revision = ThesisRevision::query()->create(['thesis_defense_id' => $defense->id, 'item' => trim($item)]);
+        $this->audit($actor, $defense->proposal, 'thesis.revision_added', ['item' => trim($item)]);
+
+        return $revision->fresh();
+    }
+
+    public function checkRevision(ThesisRevision $revision, User $actor): ThesisRevision
+    {
+        return DB::transaction(function () use ($revision, $actor) {
+            $locked = ThesisRevision::query()->lockForUpdate()->findOrFail($revision->id);
+            $locked->forceFill(['is_done' => true, 'checked_by' => $actor->id, 'checked_at' => now()])->save();
 
             return $locked->fresh();
         });
