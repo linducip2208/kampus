@@ -12,6 +12,7 @@ use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\DocsController;
 use App\Http\Controllers\LecturerAttendanceController;
 use App\Http\Controllers\LecturerGradeController;
+use App\Http\Controllers\LecturerLearningController;
 use App\Http\Controllers\LecturerPortalController;
 use App\Http\Controllers\MarketingController;
 use App\Http\Controllers\PortalController;
@@ -83,6 +84,11 @@ Route::middleware('auth')->prefix('lecturer')->name('lecturer.')->group(function
     Route::post('/grades/items/{item}/components/{component}', [LecturerGradeController::class, 'score'])->name('grades.score');
     Route::post('/grades/items/{item}/submit', [LecturerGradeController::class, 'submit'])->name('grades.submit');
     Route::post('/grades/items/{item}/revision', [LecturerGradeController::class, 'requestRevision'])->name('grades.revision');
+    Route::get('/learning', [LecturerLearningController::class, 'index'])->name('learning.index');
+    Route::post('/learning/sections/{section}/modules', [LecturerLearningController::class, 'module'])->name('learning.modules.store');
+    Route::post('/learning/modules/{module}/contents', [LecturerLearningController::class, 'content'])->name('learning.contents.store');
+    Route::post('/learning/sections/{section}/assignments', [LecturerLearningController::class, 'assignment'])->name('learning.assignments.store');
+    Route::post('/learning/submissions/{submission}/grade', [LecturerLearningController::class, 'grade'])->name('learning.submissions.grade');
 });
 Route::middleware('auth')->prefix('reports')->name('reports.')->group(function () {
     Route::get('/', [ReportController::class, 'index'])->name('index');
