@@ -7,7 +7,7 @@
 - PMB lifecycle service serta applicant-to-student conversion yang transactional dan idempotent.
 - KRS validation/finalization, configurable SKS limit, prasyarat, capacity/schedule/financial validation, dan audit.
 - Academic record service, GradeCalculator, KHS/IPS/IPK/transcript portal baseline.
-- Decimal Money helper, invoice/payment models, dan PaymentAllocationService.
+- Decimal Money helper, invoice/payment models, PaymentAllocationService, immutable refund ledger, invoice reconciliation, dan ledger-backed realistic demo payment.
 - Student leave/status/reactivation services beserta Tabler student/BAAK workflow, generic approval, reject reason, status history, audit, dan tests.
 - LMS KRS-scoped student workspace, lecturer module/content/assignment authoring, submission grading lock, attempt limits, audit, serta Quiz/CBT end-to-end: bank soal, builder dosen, random order persisten, timer server-side, auto-grading objektif, manual essay grading, expiry, pengumuman kelas, forum diskusi terotorisasi, lock/unlock, dan workflow tests.
 - Tabler npm dependencies, Vite bundle, shared layouts/components, database-driven branding, light/dark/system theme.
@@ -41,5 +41,5 @@
 ## TEST STATUS
 
 - Auth, password reset, student/lecturer portal, schedule collision, dan attendance lifecycle suites: passing.
-- `composer validate`, `migrate:fresh --seed`, Blade cache, 82 tests/365 assertions, scoped Pint, dan Vite production build: PASS (2026-09-15).
+- `migrate:fresh --seed`, 85 tests/381 assertions, scoped Pint, dan Vite production build: PASS (2026-09-15).
 - Source-of-truth completion matrix: `docs/MODULE_COMPLETION.md`.

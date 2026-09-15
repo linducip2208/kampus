@@ -25,6 +25,7 @@ use App\Models\FeeType;
 use App\Models\GradeScale;
 use App\Models\LectureMeeting;
 use App\Models\LecturerProfile;
+use App\Models\Payment;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\Semester;
@@ -39,6 +40,7 @@ use App\Models\StudyPlanItem;
 use App\Models\StudyProgram;
 use App\Models\University;
 use App\Models\User;
+use App\Services\Finance\PaymentAllocationService;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -198,8 +200,10 @@ class DatabaseSeeder extends Seeder
             StudentAttendance::create(['attendance_session_id' => $item['session']->id, 'student_enrollment_id' => $enrollment->id, 'status' => 'present', 'recorded_at' => now()]);
         }
         $fee = FeeType::create(['university_id' => $university->id, 'name' => 'Uang Kuliah Tunggal', 'code' => 'UKT', 'is_recurring' => true]);
-        $invoice = StudentInvoice::create(['student_enrollment_id' => $enrollment->id, 'semester_id' => $semester->id, 'invoice_number' => 'INV/2026/09/000001', 'total_amount' => 7500000, 'paid_amount' => 4500000, 'status' => 'partial', 'due_on' => now()->addDays(14)]);
+        $invoice = StudentInvoice::create(['student_enrollment_id' => $enrollment->id, 'semester_id' => $semester->id, 'invoice_number' => 'INV/2026/09/000001', 'total_amount' => 7500000, 'paid_amount' => 0, 'status' => 'issued', 'due_on' => now()->addDays(14)]);
         $invoice->items()->create(['fee_type_id' => $fee->id, 'description' => 'UKT Semester Ganjil 2026/2027', 'amount' => 7500000]);
+        $seedPayment = Payment::create(['student_enrollment_id' => $enrollment->id, 'payment_number' => 'PAY/2026/09/000001', 'amount' => 4500000, 'method' => 'transfer', 'status' => 'paid', 'paid_at' => now()->subDay(), 'verified_by' => null]);
+        app(PaymentAllocationService::class)->allocate($seedPayment, $invoice, '4500000.00');
 
         $category = BlogCategory::create(['name' => 'Tata Kelola Akademik', 'slug' => 'tata-kelola-akademik', 'description' => 'Praktik mengelola data dan proses akademik.']);
         foreach ([

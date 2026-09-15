@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\AuditLog;
 use App\Models\StudentEnrollment;
 use App\Models\User;
 use App\Services\Student\StudentStatusService;
@@ -19,6 +20,7 @@ class StudentStatusLifecycleTest extends TestCase
         $enrollment = StudentEnrollment::query()->firstOrFail();
         $admin = User::query()->where('email', 'admin@kampus.test')->firstOrFail();
         $service = app(StudentStatusService::class);
+        $auditCountBefore = AuditLog::query()->count();
 
         $service->transition($enrollment, 'leave', $admin, 'Cuti akademik.');
         $service->reactivate($enrollment->fresh(), $admin, 'Masa cuti selesai.');
@@ -34,7 +36,7 @@ class StudentStatusLifecycleTest extends TestCase
             'from_status' => 'leave',
             'to_status' => 'active',
         ]);
-        $this->assertDatabaseCount('audit_logs', 2);
+        $this->assertSame($auditCountBefore + 2, AuditLog::query()->count());
     }
 
     public function test_terminal_status_cannot_be_reactivated(): void
@@ -43,6 +45,7 @@ class StudentStatusLifecycleTest extends TestCase
         $enrollment = StudentEnrollment::query()->firstOrFail();
         $admin = User::query()->where('email', 'admin@kampus.test')->firstOrFail();
         $service = app(StudentStatusService::class);
+        $auditCountBefore = AuditLog::query()->count();
 
         $service->transition($enrollment, 'graduated', $admin, 'Lulus yudisium.');
 

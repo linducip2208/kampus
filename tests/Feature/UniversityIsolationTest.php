@@ -67,6 +67,10 @@ class UniversityIsolationTest extends TestCase
             'paid_at' => now(),
         ]);
         $finance = User::query()->where('email', 'finance@kampus.test')->firstOrFail();
+        $localUniversityId = $localEnrollment->studyProgram->department->faculty->university_id;
+        $expectedPaymentCount = Payment::query()
+            ->whereHas('enrollment.studyProgram.department.faculty', fn ($query) => $query->where('faculties.university_id', $localUniversityId))
+            ->count();
 
         $this->actingAs($finance, 'sanctum')
             ->getJson('/api/v1/invoices?per_page=100')
@@ -77,7 +81,8 @@ class UniversityIsolationTest extends TestCase
         $this->actingAs($finance, 'sanctum')
             ->getJson('/api/v1/payments?per_page=100')
             ->assertOk()
-            ->assertJsonCount(1, 'data')
+            ->assertJsonCount($expectedPaymentCount, 'data')
+            ->assertJsonFragment(['payment_number' => 'PAY/LOCAL/001'])
             ->assertJsonMissing(['payment_number' => $foreignPayment->payment_number]);
     }
 
