@@ -3,7 +3,7 @@
 ## COMPLETED
 
 - Laravel 13, Filament 5, Livewire 4, Sanctum, ULID core schema, seed demo, sitemap/robots, blog/RSS, dan IndexNow foundation.
-- Core identity organization, employee/lecturer, student profile/enrollment, scoped role pivot, dan permission gate.
+- Core identity organization, employee/lecturer, student profile/enrollment, scoped role pivot, permission gate, dan tested API university isolation untuk academic/finance.
 - PMB lifecycle service serta applicant-to-student conversion yang transactional dan idempotent.
 - KRS validation/finalization, configurable SKS limit, prasyarat, capacity/schedule/financial validation, dan audit.
 - Academic record service, GradeCalculator, KHS/IPS/IPK/transcript portal baseline.
@@ -21,7 +21,7 @@
 
 ## NEXT
 
-1. Tambahkan automated tenant-isolation suite untuk organization, student, academic, finance, dan PMB.
+1. Terapkan UniversityScope pada seluruh resource admin, dashboard, PMB, research, assets, dan documents serta perluas isolation tests.
 2. Bangun custom Tabler admin dashboard + permission-aware navigation tanpa memutus resource lama.
 3. Migrasikan seluruh halaman student dan lecturer ke Tabler native components.
 4. Lengkapi schedule collision, attendance lifecycle, grading workflow, grade revision, KHS/transcript PDF/QR.
