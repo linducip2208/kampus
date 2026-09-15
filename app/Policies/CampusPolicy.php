@@ -254,6 +254,12 @@ class CampusPolicy
         if ($record instanceof \App\Models\WorkloadActivity) {
             return $record->workload?->lecturer?->employee?->university_id === $universityId;
         }
+        if ($record instanceof \App\Models\InvoiceDiscount || $record instanceof \App\Models\InvoicePenalty) {
+            return $record->invoice?->enrollment?->studyProgram?->department?->faculty?->university_id === $universityId;
+        }
+        if ($record instanceof \App\Models\ApplicantDocument || $record instanceof \App\Models\ApplicantPayment) {
+            return $record->applicant?->university_id === $universityId;
+        }
 
         return true;
     }

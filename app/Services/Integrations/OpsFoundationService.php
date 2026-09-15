@@ -17,7 +17,7 @@ class OpsFoundationService
 {
     public function registerEndpoint(string $universityId, array $data): IntegrationEndpoint
     {
-        if (! in_array($data['kind'], ['pddikti', 'payment_gateway', 'whatsapp', 'sso', 'storage', 'smtp', 'generic'], true)) {
+        if (! in_array($data['kind'], ['pddikti', 'payment_gateway', 'payment_manual', 'payment_midtrans', 'payment_xendit', 'payment_tripay', 'payment_duitku', 'whatsapp', 'sso', 'storage', 'smtp', 'generic'], true)) {
             throw ValidationException::withMessages(['kind' => 'Jenis integrasi tidak dikenal.']);
         }
 

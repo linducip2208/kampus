@@ -33,6 +33,16 @@ class StudentInvoice extends CampusModel
         return $this->hasMany(InvoiceInstallment::class)->orderBy('sequence');
     }
 
+    public function discounts()
+    {
+        return $this->hasMany(InvoiceDiscount::class);
+    }
+
+    public function penalties()
+    {
+        return $this->hasMany(InvoicePenalty::class);
+    }
+
     public function getOutstandingAmountAttribute(): string
     {
         $total = Money::toMinorUnits($this->total_amount);

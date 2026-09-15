@@ -43,6 +43,8 @@
         'KEUANGAN' => [
             ['label'=>'Invoice','icon'=>'ti-file-invoice','route'=>'filament.admin.resources.student-invoices.index','permission'=>'student_invoices.view'],
             ['label'=>'Pembayaran','icon'=>'ti-credit-card-pay','route'=>'filament.admin.resources.payments.index','permission'=>'payments.view'],
+            ['label'=>'Finance Center','icon'=>'ti-wallet','route'=>'admin.finance.index','permission'=>'student_invoices.view','roles'=>['super_admin','finance']],
+            ['label'=>'Integration Center','icon'=>'ti-plug','route'=>'admin.integrations.index','permission'=>'audit_logs.view','roles'=>['super_admin','finance','operator_pddikti']],
         ],
         'KEPEGAWAIAN' => [
             ['label'=>'HRM & BKD','icon'=>'ti-briefcase','route'=>'admin.hrm.index','permission'=>'audit_logs.view','roles'=>['super_admin','hr','rektor','dekan']],
