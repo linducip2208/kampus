@@ -18,6 +18,7 @@ use App\Http\Controllers\PortalController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\StudentAttendanceController;
+use App\Http\Controllers\StudentLearningController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [MarketingController::class, 'index'])->name('home');
@@ -63,6 +64,9 @@ Route::middleware('auth')->prefix('portal')->name('portal.')->group(function () 
     Route::get('/invoices', [PortalController::class, 'invoices'])->name('invoices');
     Route::get('/attendance', [StudentAttendanceController::class, 'index'])->name('attendance.index');
     Route::post('/attendance/{session}', [StudentAttendanceController::class, 'record'])->name('attendance.record');
+    Route::get('/learning', [StudentLearningController::class, 'index'])->name('learning.index');
+    Route::get('/assignments/{assignment}', [StudentLearningController::class, 'assignment'])->name('assignments.show');
+    Route::post('/assignments/{assignment}', [StudentLearningController::class, 'submit'])->name('assignments.submit');
 });
 
 Route::middleware('auth')->prefix('lecturer')->name('lecturer.')->group(function () {
