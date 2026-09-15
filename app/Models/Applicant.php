@@ -16,4 +16,6 @@ class Applicant extends CampusModel
     public function exams() { return $this->hasMany(AdmissionExam::class); }
     public function interviews() { return $this->hasMany(ApplicantInterview::class); }
     public function reRegistration() { return $this->hasOne(ApplicantReRegistration::class); }
+    public function documents() { return $this->hasMany(ApplicantDocument::class); }
+    public function payments() { return $this->hasMany(ApplicantPayment::class); }
 }

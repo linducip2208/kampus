@@ -3,11 +3,14 @@
 use App\Http\Controllers\AcademicDocumentController;
 use App\Http\Controllers\Admin\AcademicLifecycleController;
 use App\Http\Controllers\Admin\AcademicMasterController;
+use App\Http\Controllers\AdmissionController;
+use App\Http\Controllers\ApplicantPortalController;
 use App\Http\Controllers\Admin\CampusServiceController;
 use App\Http\Controllers\Admin\ClassScheduleController;
 use App\Http\Controllers\Admin\GradeApprovalController;
 use App\Http\Controllers\Admin\HrmController;
 use App\Http\Controllers\Admin\OpsController;
+use App\Http\Controllers\Admin\PmbController;
 use App\Http\Controllers\Admin\OrganizationController;
 use App\Http\Controllers\Admin\StudentLifecycleController as AdminStudentLifecycleController;
 use App\Http\Controllers\AdminWorkspaceController;
@@ -55,6 +58,18 @@ Route::get('/contact', [CatalogController::class, 'contact'])->name('contact');
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/robots.txt', [SitemapController::class, 'robots'])->name('robots');
 Route::get('/verify/academic-document/{token}', [AcademicDocumentController::class, 'verify'])->middleware('throttle:60,1')->name('academic-documents.verify');
+Route::get('/admission', [AdmissionController::class, 'landing'])->name('admission.landing');
+Route::post('/admission/register', [AdmissionController::class, 'register'])->middleware('throttle:10,1')->name('admission.register');
+
+Route::middleware('auth')->prefix('admission')->name('admission.')->group(function () {
+    Route::get('/dashboard', [ApplicantPortalController::class, 'dashboard'])->name('dashboard');
+    Route::post('/biodata', [ApplicantPortalController::class, 'biodata'])->name('biodata');
+    Route::post('/choices', [ApplicantPortalController::class, 'choices'])->name('choices');
+    Route::post('/documents', [ApplicantPortalController::class, 'document'])->name('documents');
+    Route::post('/submit', [ApplicantPortalController::class, 'submit'])->name('submit');
+    Route::post('/payment', [ApplicantPortalController::class, 'payment'])->name('payment');
+    Route::post('/re-registration', [ApplicantPortalController::class, 'reRegistration'])->name('re-registration');
+});
 
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', AdminWorkspaceController::class)->name('dashboard');
@@ -83,6 +98,15 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::post('/hrm/positions', [HrmController::class, 'storePosition'])->name('hrm.positions.store');
     Route::post('/hrm/leaves/{leave}/decide', [HrmController::class, 'decideLeave'])->name('hrm.leaves.decide');
     Route::post('/hrm/workloads/{workload}/decide', [HrmController::class, 'decideWorkload'])->name('hrm.workloads.decide');
+    Route::get('/pmb', [PmbController::class, 'index'])->name('pmb.index');
+    Route::post('/pmb/payments/{payment}/verify', [PmbController::class, 'verifyPayment'])->name('pmb.payments.verify');
+    Route::post('/pmb/applicants/{applicant}/documents/verify', [PmbController::class, 'verifyDocuments'])->name('pmb.documents.verify');
+    Route::post('/pmb/applicants/{applicant}/exams', [PmbController::class, 'scheduleExam'])->name('pmb.exams.schedule');
+    Route::post('/pmb/exams/{exam}/score', [PmbController::class, 'scoreExam'])->name('pmb.exams.score');
+    Route::post('/pmb/applicants/{applicant}/interview', [PmbController::class, 'interview'])->name('pmb.interview');
+    Route::post('/pmb/applicants/{applicant}/decide', [PmbController::class, 'decide'])->name('pmb.decide');
+    Route::post('/pmb/applicants/{applicant}/re-registration/approve', [PmbController::class, 'approveReRegistration'])->name('pmb.re-registration.approve');
+    Route::post('/pmb/applicants/{applicant}/convert', [PmbController::class, 'convert'])->name('pmb.convert');
     Route::get('/organization', [OrganizationController::class, 'index'])->name('organization.index');
     Route::post('/organization/buildings', [OrganizationController::class, 'storeBuilding'])->name('organization.buildings.store');
     Route::post('/organization/rooms', [OrganizationController::class, 'storeRoom'])->name('organization.rooms.store');

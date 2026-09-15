@@ -14,6 +14,7 @@
     $groups = [
         'PENERIMAAN' => [
             ['label'=>'Pendaftar','icon'=>'ti-user-plus','route'=>'filament.admin.resources.applicants.index','permission'=>'applicants.view','roles'=>['pmb']],
+            ['label'=>'PMB Workspace','icon'=>'ti-user-check','route'=>'admin.pmb.index','permission'=>'applicants.view','roles'=>['super_admin','pmb','baak']],
         ],
         'AKADEMIK' => [
             ['label'=>'Tahun Akademik','icon'=>'ti-calendar-stats','route'=>'filament.admin.resources.academic-years.index','permission'=>'academic_years.view'],

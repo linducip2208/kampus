@@ -23,6 +23,7 @@ class MarketingController extends Controller
 
             return match (true) {
                 $user->hasRole('mahasiswa') => redirect()->route('portal.dashboard'),
+                $user->hasRole('applicant') => redirect()->route('admission.dashboard'),
                 $user->hasRole(['dosen', 'dosen_wali', 'dosen_pembimbing']) => redirect()->route('lecturer.dashboard'),
                 default => redirect('/admin'),
             };
