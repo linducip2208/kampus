@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class StudentLeaveRequest extends CampusModel
+class StudentReactivationRequest extends CampusModel
 {
     protected $casts = [
         'submitted_at' => 'datetime',

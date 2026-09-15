@@ -57,4 +57,14 @@ class StudentEnrollment extends CampusModel
     {
         return $this->hasMany(QuizAttempt::class);
     }
+
+    public function leaveRequests()
+    {
+        return $this->hasMany(StudentLeaveRequest::class);
+    }
+
+    public function reactivationRequests()
+    {
+        return $this->hasMany(StudentReactivationRequest::class);
+    }
 }

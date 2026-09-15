@@ -3,6 +3,7 @@
 use App\Http\Controllers\AcademicDocumentController;
 use App\Http\Controllers\Admin\ClassScheduleController;
 use App\Http\Controllers\Admin\GradeApprovalController;
+use App\Http\Controllers\Admin\StudentLifecycleController as AdminStudentLifecycleController;
 use App\Http\Controllers\AdminWorkspaceController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
@@ -20,6 +21,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\StudentAttendanceController;
 use App\Http\Controllers\StudentLearningController;
+use App\Http\Controllers\StudentLifecycleController;
 use App\Http\Controllers\StudentQuizController;
 use Illuminate\Support\Facades\Route;
 
@@ -54,6 +56,11 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/grades', [GradeApprovalController::class, 'index'])->name('grades.index');
     Route::post('/grades/{grade}/transition', [GradeApprovalController::class, 'transition'])->name('grades.transition');
     Route::post('/grades/revisions/{revision}/review', [GradeApprovalController::class, 'reviewRevision'])->name('grades.revisions.review');
+    Route::get('/student-lifecycle', [AdminStudentLifecycleController::class, 'index'])->name('student-lifecycle.index');
+    Route::post('/student-lifecycle/leaves/{leave}/approve', [AdminStudentLifecycleController::class, 'approveLeave'])->name('student-lifecycle.leaves.approve');
+    Route::post('/student-lifecycle/leaves/{leave}/reject', [AdminStudentLifecycleController::class, 'rejectLeave'])->name('student-lifecycle.leaves.reject');
+    Route::post('/student-lifecycle/reactivations/{reactivation}/approve', [AdminStudentLifecycleController::class, 'approveReactivation'])->name('student-lifecycle.reactivations.approve');
+    Route::post('/student-lifecycle/reactivations/{reactivation}/reject', [AdminStudentLifecycleController::class, 'rejectReactivation'])->name('student-lifecycle.reactivations.reject');
 });
 
 Route::middleware('auth')->prefix('portal')->name('portal.')->group(function () {
@@ -76,6 +83,9 @@ Route::middleware('auth')->prefix('portal')->name('portal.')->group(function () 
     Route::post('/quiz-attempts/{attempt}/submit', [StudentQuizController::class, 'submit'])->name('quiz-attempts.submit');    Route::post('/learning/sections/{section}/discussions', [StudentLearningController::class, 'createDiscussion'])->name('discussions.store');
     Route::get('/discussions/{discussion}', [StudentLearningController::class, 'discussion'])->name('discussions.show');
     Route::post('/discussions/{discussion}/replies', [StudentLearningController::class, 'replyDiscussion'])->name('discussions.reply');
+    Route::get('/lifecycle', [StudentLifecycleController::class, 'index'])->name('lifecycle.index');
+    Route::post('/lifecycle/leave', [StudentLifecycleController::class, 'leave'])->name('lifecycle.leave');
+    Route::post('/lifecycle/reactivate', [StudentLifecycleController::class, 'reactivate'])->name('lifecycle.reactivate');
 });
 
 Route::middleware('auth')->prefix('lecturer')->name('lecturer.')->group(function () {
