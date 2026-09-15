@@ -238,6 +238,9 @@ class CampusPolicy
         if ($record instanceof Laboratory) {
             return $record->department?->faculty?->university_id === $universityId;
         }
+        if ($record instanceof \App\Models\CourseEquivalence) {
+            return $record->oldCourse?->university_id === $universityId;
+        }
 
         return true;
     }

@@ -25,6 +25,7 @@
             ['label'=>'Penawaran','icon'=>'ti-calendar-plus','route'=>'filament.admin.resources.course-offerings.index','permission'=>'course_offerings.view'],
             ['label'=>'Kelas','icon'=>'ti-door','route'=>'filament.admin.resources.class-sections.index','permission'=>'class_sections.view'],
             ['label'=>'Jadwal','icon'=>'ti-calendar-time','route'=>'admin.schedules.index','permission'=>'class_sections.view'],
+            ['label'=>'Master Akademik','icon'=>'ti-calendar-stats','route'=>'admin.academic-master.index','permission'=>'academic_years.view','roles'=>['super_admin','baak']],
             ['label'=>'Fasilitas','icon'=>'ti-building','route'=>'admin.organization.index','permission'=>'faculties.view','roles'=>['super_admin','baak']],
         ],
         'MAHASISWA & PERKULIAHAN' => [

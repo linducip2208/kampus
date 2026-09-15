@@ -7,6 +7,7 @@ use App\Models\Department;
 use App\Models\User;
 use App\Services\Organization\FacilityService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
 class OrganizationFacilityTest extends TestCase
@@ -36,7 +37,7 @@ class OrganizationFacilityTest extends TestCase
         try {
             app(FacilityService::class)->createBuilding($campus->id, ['name' => 'Duplikat', 'code' => 'GR'], $admin);
             $this->fail('Kode gedung duplikat seharusnya ditolak.');
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (ValidationException $e) {
             $this->assertArrayHasKey('code', $e->errors());
         }
     }

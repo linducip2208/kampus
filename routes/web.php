@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AcademicDocumentController;
 use App\Http\Controllers\Admin\AcademicLifecycleController;
+use App\Http\Controllers\Admin\AcademicMasterController;
 use App\Http\Controllers\Admin\CampusServiceController;
 use App\Http\Controllers\Admin\ClassScheduleController;
 use App\Http\Controllers\Admin\GradeApprovalController;
@@ -79,6 +80,10 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::post('/organization/buildings', [OrganizationController::class, 'storeBuilding'])->name('organization.buildings.store');
     Route::post('/organization/rooms', [OrganizationController::class, 'storeRoom'])->name('organization.rooms.store');
     Route::post('/organization/laboratories', [OrganizationController::class, 'storeLaboratory'])->name('organization.laboratories.store');
+    Route::get('/academic-master', [AcademicMasterController::class, 'index'])->name('academic-master.index');
+    Route::post('/academic-master/calendars', [AcademicMasterController::class, 'storeCalendar'])->name('academic-master.calendars.store');
+    Route::post('/academic-master/holidays', [AcademicMasterController::class, 'storeHoliday'])->name('academic-master.holidays.store');
+    Route::post('/academic-master/categories', [AcademicMasterController::class, 'storeCategory'])->name('academic-master.categories.store');
 });
 
 Route::middleware('auth')->prefix('portal')->name('portal.')->group(function () {
