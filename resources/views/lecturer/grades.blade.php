@@ -1,0 +1,23 @@
+@extends('layouts.tabler.lecturer', ['title' => 'Input Nilai', 'heading' => 'Input dan publikasi nilai'])
+
+@section('content')
+@if(session('success'))<x-tabler.alert type="success">{{ session('success') }}</x-tabler.alert>@endif
+@if($errors->any())<x-tabler.alert type="danger"><strong>Perubahan belum disimpan.</strong> {{ $errors->first() }}</x-tabler.alert>@endif
+<div class="row row-cards">
+@forelse($sections as $section)
+<div class="col-12"><x-tabler.card title="{{ $section->offering?->course?->name }} · {{ $section->code }}">
+    <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mb-3"><div><div class="text-secondary">{{ $section->offering?->course?->code }} · {{ $section->studyPlanItems->count() }} mahasiswa</div>@if($section->gradingComponents->isNotEmpty())<div class="mt-2">@foreach($section->gradingComponents as $component)<span class="badge bg-azure-lt text-azure me-1">{{ $component->name }} {{ number_format((float)$component->weight, 0) }}%</span>@endforeach</div>@endif</div><button class="btn btn-outline-primary align-self-start" data-bs-toggle="modal" data-bs-target="#scheme-{{ $section->id }}"><i class="ti ti-adjustments me-2"></i>Atur komponen</button></div>
+    @if($section->gradingComponents->isEmpty())
+        <x-tabler.empty-state title="Skema nilai belum diatur" description="Tetapkan komponen dan bobot tepat 100% sebelum mengisi nilai mahasiswa." icon="ti-calculator" />
+    @elseif($section->studyPlanItems->isEmpty())
+        <x-tabler.empty-state title="Belum ada peserta" description="Peserta muncul setelah KRS disetujui." icon="ti-users-off" />
+    @else
+    <div class="table-responsive"><table class="table table-vcenter"><thead><tr><th>Mahasiswa</th>@foreach($section->gradingComponents as $component)<th>{{ $component->name }}</th>@endforeach<th>Nilai akhir</th><th>Status</th><th></th></tr></thead><tbody>
+    @foreach($section->studyPlanItems as $item)<tr><td><div class="fw-semibold">{{ $item->studyPlan?->enrollment?->studentProfile?->full_name }}</div><div class="text-secondary small">{{ $item->studyPlan?->enrollment?->studentProfile?->student_number }}</div></td>@foreach($section->gradingComponents as $component)@php($score=$item->componentScores->firstWhere('grading_component_id',$component->id))<td><form method="POST" action="{{ route('lecturer.grades.score', [$item,$component]) }}" class="d-flex gap-1">@csrf<input type="number" name="score" class="form-control form-control-sm" style="min-width:5rem" min="0" max="100" step=".01" value="{{ $score?->score }}" aria-label="Nilai {{ $component->name }}" @disabled($item->grade && $item->grade->status !== 'draft')><button class="btn btn-sm btn-icon btn-ghost-primary" aria-label="Simpan nilai" @disabled($item->grade && $item->grade->status !== 'draft')><i class="ti ti-device-floppy"></i></button></form></td>@endforeach<td class="fw-bold">{{ $item->grade?->final_score ?? '—' }} @if($item->grade?->gradeScale)<span class="badge bg-green-lt text-green">{{ $item->grade->gradeScale->grade }}</span>@endif</td><td><x-tabler.status :value="$item->grade?->status ?? 'draft'" /></td><td>@if(!$item->grade || $item->grade->status==='draft')<form method="POST" action="{{ route('lecturer.grades.submit',$item) }}">@csrf<button class="btn btn-sm btn-primary" onclick="return confirm('Submit nilai akhir mahasiswa ini?')">Submit</button></form>@endif</td></tr>@endforeach
+    </tbody></table></div>
+    @endif
+</x-tabler.card></div>
+<x-tabler.modal id="scheme-{{ $section->id }}" title="Komponen nilai {{ $section->code }}" size="lg"><form method="POST" action="{{ route('lecturer.grades.configure',$section) }}">@csrf<div class="row g-3">@for($i=0;$i<5;$i++)@php($component=$section->gradingComponents->get($i))<div class="col-7"><label class="form-label">Nama komponen {{ $i+1 }}</label><input class="form-control" name="components[{{ $i }}][name]" value="{{ $component?->name }}" placeholder="Contoh: UTS"></div><div class="col-5"><label class="form-label">Bobot (%)</label><input type="number" class="form-control" name="components[{{ $i }}][weight]" value="{{ $component?->weight }}" min="0.01" max="100" step=".01"></div>@endfor</div><div class="form-hint mt-3">Total komponen yang terisi harus tepat 100%. Skema terkunci setelah nilai mulai diinput.</div><button class="btn btn-primary w-100 mt-3">Simpan skema</button></form></x-tabler.modal>
+@empty<div class="col-12"><x-tabler.empty-state title="Belum ada kelas" description="Kelas yang Anda ampu akan tampil di sini." icon="ti-school-off" /></div>@endforelse
+</div>
+@endsection

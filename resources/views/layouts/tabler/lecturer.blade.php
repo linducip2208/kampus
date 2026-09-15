@@ -28,7 +28,7 @@
                 <div class="card bg-primary-lt border-0 mb-3"><div class="card-body py-3"><div class="text-primary text-uppercase small fw-bold">Portal dosen</div><div class="fw-semibold text-truncate mt-1">{{ $lecturer->employee?->full_name ?? auth()->user()->name }}</div><div class="small text-secondary text-truncate">{{ $lecturer->nidn ?: auth()->user()->email }}</div></div></div>
                 <div class="mb-2 px-3 text-secondary text-uppercase small fw-bold">Ruang kerja</div>
                 <ul class="navbar-nav campus-nav">
-                    @foreach([['lecturer.dashboard','Dashboard','ti-dashboard'],['lecturer.schedule','Jadwal Mengajar','ti-calendar-event'],['lecturer.classes','Kelas Saya','ti-book'],['lecturer.attendance.index','Presensi','ti-calendar-check'],['lecturer.advisees','Mahasiswa Bimbingan','ti-users-group']] as $nav)
+                    @foreach([['lecturer.dashboard','Dashboard','ti-dashboard'],['lecturer.schedule','Jadwal Mengajar','ti-calendar-event'],['lecturer.classes','Kelas Saya','ti-book'],['lecturer.attendance.index','Presensi','ti-calendar-check'],['lecturer.grades.index','Input Nilai','ti-calculator'],['lecturer.advisees','Mahasiswa Bimbingan','ti-users-group']] as $nav)
                         <li class="nav-item"><a href="{{ route($nav[0]) }}" class="nav-link {{ request()->routeIs($nav[0]) ? 'active' : '' }}"><span class="nav-link-icon"><i class="ti {{ $nav[2] }}"></i></span><span class="nav-link-title">{{ $nav[1] }}</span></a></li>
                     @endforeach
                 </ul>

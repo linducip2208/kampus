@@ -30,6 +30,7 @@
             ['label'=>'Mahasiswa','icon'=>'ti-users','route'=>'filament.admin.resources.student-profiles.index','permission'=>'students.view'],
             ['label'=>'Enrollment','icon'=>'ti-id-badge-2','route'=>'filament.admin.resources.student-enrollments.index','permission'=>'student_enrollments.view'],
             ['label'=>'KRS','icon'=>'ti-checklist','route'=>'filament.admin.resources.study-plans.index','permission'=>'krs.view'],
+            ['label'=>'Approval Nilai','icon'=>'ti-file-check','route'=>'admin.grades.index','permission'=>'krs.view','roles'=>['baak','rektor']],
             ['label'=>'Assignment','icon'=>'ti-clipboard-text','route'=>'filament.admin.resources.assignments.index','permission'=>'assignments.view','roles'=>['super_admin']],
         ],
         'KEUANGAN' => [

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\ClassScheduleController;
+use App\Http\Controllers\Admin\GradeApprovalController;
 use App\Http\Controllers\AdminWorkspaceController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\DocsController;
 use App\Http\Controllers\LecturerAttendanceController;
+use App\Http\Controllers\LecturerGradeController;
 use App\Http\Controllers\LecturerPortalController;
 use App\Http\Controllers\MarketingController;
 use App\Http\Controllers\PortalController;
@@ -44,6 +46,8 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/schedules', [ClassScheduleController::class, 'index'])->name('schedules.index');
     Route::post('/schedules', [ClassScheduleController::class, 'store'])->name('schedules.store');
     Route::put('/schedules/{schedule}', [ClassScheduleController::class, 'update'])->name('schedules.update');
+    Route::get('/grades', [GradeApprovalController::class, 'index'])->name('grades.index');
+    Route::post('/grades/{grade}/transition', [GradeApprovalController::class, 'transition'])->name('grades.transition');
 });
 
 Route::middleware('auth')->prefix('portal')->name('portal.')->group(function () {
@@ -64,6 +68,10 @@ Route::middleware('auth')->prefix('lecturer')->name('lecturer.')->group(function
     Route::post('/attendance/meetings/{meeting}/open', [LecturerAttendanceController::class, 'open'])->name('attendance.open');
     Route::post('/attendance/sessions/{session}/close', [LecturerAttendanceController::class, 'close'])->name('attendance.close');
     Route::post('/attendance/sessions/{session}/record', [LecturerAttendanceController::class, 'record'])->name('attendance.record');
+    Route::get('/grades', [LecturerGradeController::class, 'index'])->name('grades.index');
+    Route::post('/grades/sections/{section}/configure', [LecturerGradeController::class, 'configure'])->name('grades.configure');
+    Route::post('/grades/items/{item}/components/{component}', [LecturerGradeController::class, 'score'])->name('grades.score');
+    Route::post('/grades/items/{item}/submit', [LecturerGradeController::class, 'submit'])->name('grades.submit');
 });
 Route::middleware('auth')->prefix('reports')->name('reports.')->group(function () {
     Route::get('/', [ReportController::class, 'index'])->name('index');
