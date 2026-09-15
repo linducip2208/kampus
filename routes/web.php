@@ -48,6 +48,7 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::put('/schedules/{schedule}', [ClassScheduleController::class, 'update'])->name('schedules.update');
     Route::get('/grades', [GradeApprovalController::class, 'index'])->name('grades.index');
     Route::post('/grades/{grade}/transition', [GradeApprovalController::class, 'transition'])->name('grades.transition');
+    Route::post('/grades/revisions/{revision}/review', [GradeApprovalController::class, 'reviewRevision'])->name('grades.revisions.review');
 });
 
 Route::middleware('auth')->prefix('portal')->name('portal.')->group(function () {
@@ -73,6 +74,7 @@ Route::middleware('auth')->prefix('lecturer')->name('lecturer.')->group(function
     Route::post('/grades/sections/{section}/configure', [LecturerGradeController::class, 'configure'])->name('grades.configure');
     Route::post('/grades/items/{item}/components/{component}', [LecturerGradeController::class, 'score'])->name('grades.score');
     Route::post('/grades/items/{item}/submit', [LecturerGradeController::class, 'submit'])->name('grades.submit');
+    Route::post('/grades/items/{item}/revision', [LecturerGradeController::class, 'requestRevision'])->name('grades.revision');
 });
 Route::middleware('auth')->prefix('reports')->name('reports.')->group(function () {
     Route::get('/', [ReportController::class, 'index'])->name('index');

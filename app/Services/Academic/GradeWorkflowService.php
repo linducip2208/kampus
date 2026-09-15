@@ -145,6 +145,30 @@ class GradeWorkflowService
         });
     }
 
+    public function rejectRevision(GradeRevisionRequest $request, string $reason, User $actor): GradeRevisionRequest
+    {
+        return DB::transaction(function () use ($request, $reason, $actor) {
+            $this->authorizeApprover($actor);
+            $request = GradeRevisionRequest::query()->lockForUpdate()->findOrFail($request->id);
+            if ($request->status !== 'pending') {
+                throw ValidationException::withMessages(['revision' => 'Permintaan revisi sudah diproses.']);
+            }
+            if (blank($reason)) {
+                throw ValidationException::withMessages(['rejection_reason' => 'Alasan penolakan wajib diisi.']);
+            }
+
+            $request->forceFill([
+                'status' => 'rejected',
+                'rejection_reason' => $reason,
+                'rejected_by' => $actor->id,
+                'rejected_at' => now(),
+            ])->save();
+            $this->audit('grade.revision_rejected', $request, $actor, ['status' => 'pending'], ['status' => 'rejected', 'reason' => $reason]);
+
+            return $request->fresh();
+        });
+    }
+
     private function transition(StudentGrade $grade, string $from, string $to, User $actor, array $attributes): StudentGrade
     {
         return DB::transaction(function () use ($grade, $from, $to, $actor, $attributes) {

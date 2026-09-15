@@ -73,4 +73,37 @@ class GradePortalTest extends TestCase
 
         $this->assertSame('approved', StudentGrade::query()->findOrFail($grade->id)->status);
     }
+
+    public function test_locked_grade_revision_can_be_requested_and_rejected_through_tabler_workspaces(): void
+    {
+        $this->seed();
+        $lecturer = User::query()->where('email', 'dosen@kampus.test')->firstOrFail();
+        $baak = User::query()->where('email', 'baak@kampus.test')->firstOrFail();
+        $item = StudyPlanItem::query()->firstOrFail();
+        $item->grade()->update(['status' => 'locked', 'locked_at' => now()]);
+
+        $this->actingAs($lecturer)->post(route('lecturer.grades.revision', $item), [
+            'new_score' => 84,
+            'reason' => 'Koreksi berdasarkan berita acara pemeriksaan ulang.',
+        ])->assertRedirect()->assertSessionHas('success');
+
+        $revision = $item->grade->revisionRequests()->firstOrFail();
+        $this->actingAs($baak)->get(route('admin.grades.index'))
+            ->assertOk()->assertSee('Koreksi berdasarkan berita acara');
+
+        $this->post(route('admin.grades.revisions.review', $revision), [
+            'action' => 'reject',
+            'rejection_reason' => 'Dokumen pendukung koreksi belum lengkap.',
+        ])->assertRedirect()->assertSessionHas('success');
+
+        $this->assertDatabaseHas('grade_revision_requests', [
+            'id' => $revision->id,
+            'status' => 'rejected',
+            'rejected_by' => $baak->id,
+        ]);
+        $this->assertDatabaseHas('audit_logs', [
+            'event' => 'grade.revision_rejected',
+            'entity_id' => $revision->id,
+        ]);
+    }
 }

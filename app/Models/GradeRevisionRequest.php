@@ -8,6 +8,7 @@ class GradeRevisionRequest extends CampusModel
         'old_score' => 'decimal:2',
         'new_score' => 'decimal:2',
         'approved_at' => 'datetime',
+        'rejected_at' => 'datetime',
     ];
 
     public function grade()
@@ -23,5 +24,10 @@ class GradeRevisionRequest extends CampusModel
     public function approver()
     {
         return $this->belongsTo(User::class, 'approved_by');
+    }
+
+    public function rejecter()
+    {
+        return $this->belongsTo(User::class, 'rejected_by');
     }
 }

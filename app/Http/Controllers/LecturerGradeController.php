@@ -20,7 +20,7 @@ class LecturerGradeController extends Controller
         $sections = $lecturer->classSections()->with([
             'offering.course', 'gradingComponents',
             'studyPlanItems' => fn ($query) => $query->whereHas('studyPlan', fn ($plan) => $plan->whereIn('status', ['approved', 'finalized', 'locked']))
-                ->with(['studyPlan.enrollment.studentProfile', 'grade.gradeScale', 'componentScores']),
+                ->with(['studyPlan.enrollment.studentProfile', 'grade.gradeScale', 'grade.revisionRequests', 'componentScores']),
         ])->orderBy('code')->get();
 
         return view('lecturer.grades', compact('lecturer', 'sections'));
@@ -54,6 +54,19 @@ class LecturerGradeController extends Controller
         $service->submit($item, $request->user());
 
         return back()->with('success', 'Nilai akhir berhasil disubmit untuk persetujuan.');
+    }
+
+    public function requestRevision(Request $request, StudyPlanItem $item, GradeWorkflowService $service): RedirectResponse
+    {
+        $this->lecturer($request);
+        $grade = $item->grade()->firstOrFail();
+        $data = $request->validate([
+            'new_score' => ['required', 'numeric', 'between:0,100'],
+            'reason' => ['required', 'string', 'min:10', 'max:2000'],
+        ]);
+        $service->requestRevision($grade, $data['new_score'], $data['reason'], $request->user());
+
+        return back()->with('success', 'Permintaan revisi nilai dikirim untuk persetujuan.');
     }
 
     private function lecturer(Request $request): LecturerProfile
